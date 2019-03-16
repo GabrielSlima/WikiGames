@@ -1,0 +1,39 @@
+{% extends "main.html"%}
+{%include "headerpublic.html"%}
+{% block content%}
+<br>
+<div class="container">
+    <div class="row">
+    <div class="col-sm-8">
+        <h2>Categories</h2>
+        {% for category in categories%}
+        <div class="card-group">
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">{{category['title']}}</h5>
+                <p class="card-text">{{category['description']}}</p>
+                <a class="btn btn-primary" href="{{url_for('showCatalogItems', categoryName=category['title'])}}">See some games</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endfor%}
+    </div>
+    <div class="col-sm-4">
+            <h2>Last added</h2>
+        {% for item in items%}
+        <div class="card-group">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{item['title']}}</h5>
+                    <a class="#" href="#">DOM</a>
+                                
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endfor%}
+    </div>
+</div>
+</div>
+{% endblock%}

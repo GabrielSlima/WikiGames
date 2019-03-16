@@ -1,0 +1,27 @@
+{% extends "main.html"%}
+{% include "header.html"%}
+{% block content%}
+<br>
+<h2>Categories</h2>
+<div class="card-group">
+    <!-- FOR -->
+    <div class="col-sm-7 card">
+        <div class="card-body">
+            <h5 class="card-title">80's FPS</h5>
+            <p class="card-text">Aqui entra a descrição de jogos desse genero</p>
+            <a class="btn btn-primary" href="#">See some games</a>
+        </div>
+    </div>
+    <div class="col-sm-1"></div>
+    <!-- ENDFOR -->
+
+    <!-- FOR PARA AS 10 ULTIMAS INSERÇÕES -->
+    <div class="col-sm-4 card">
+            <div class="card-body">
+                <h5 class="card-title">80's FPS</h5>
+                <a class="#" href="#">DOM</a>
+                
+            </div>
+    </div>
+</div>
+{% endblock%}
