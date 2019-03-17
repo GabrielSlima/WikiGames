@@ -9,6 +9,23 @@ def createUser(user_name, user_email, user_picture):
     session.add(user)
     session.commit()
 
+def deleteCategory(category_id):
+    category = session.query(Category).filter_by(id = category_id).one()
+    session.delete(category)
+    session.commit()
+
+def updateCategory(category_id, category_title, category_descr, category_user_id):
+    newCategory = session.query(Category).filter_by(id = category_id).one()
+    newCategory.title = category_title
+    newCategory.description = category_descr
+    newCategory.user_id = category_user_id
+    session.add(newCategory)
+    session.commit()
+    
+def listCategories():
+    categories = session.query(Category).all()
+    return categories
+
 def createCategory(category_title, category_descr, category_user_id):
     category = Category(title = category_title, description=category_descr, user_id = category_user_id)
     session.add(category)

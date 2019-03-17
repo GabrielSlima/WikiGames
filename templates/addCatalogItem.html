@@ -1,0 +1,30 @@
+{% extends "main.html"%}
+{% include "header.html"%}
+{% block content%}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">You are adding a new game at {{category}}, good luck!</h5>
+                        <form action="{{url_for('addCatalogItem', catalog_name=category)}}" method="POST">
+                            <input class="form-control" name="title" type="text" placeholder="Title of the game!">
+                            <br>
+                            <textarea class="form-control" name="description" id="" cols="30" rows="10" placeholder="Put here the history about the game!"></textarea>
+                            <br>
+                            <input class="form-control" placeholder="{{category}}">
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-success">Done</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+{% endblock%}

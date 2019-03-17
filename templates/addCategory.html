@@ -1,0 +1,33 @@
+{% extends "main.html"%}
+{% include "header.html"%}
+{% block content%}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-8"> Welcome, you are adding a new category!</div>
+                                </div>
+                            </div>
+                        </h5>
+                        <form action="{{url_for('addCategory')}}" method="POST">
+                            <input class="form-control" type="text" name="title" placeholder="Category's name!">
+                            <br>
+                            <textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
+                            <br>
+                            <button type="submit" class="btn btn-success btn-block">Add a new category now!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
