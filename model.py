@@ -26,6 +26,6 @@ class Game (Base):
     short_description = Column(String(250), nullable=False)
     long_description = Column(String(250), nullable=False)
     category_id = Column(Integer, ForeignKey)
-    user_idColumn(Integer, ForeignKey)
+    user_id = Column(Integer, ForeignKey)
     category = relationship(Category)
     user = relationship(User)
