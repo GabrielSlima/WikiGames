@@ -9,6 +9,57 @@ usersMock = [
     {'name':'Gerald', 'email':'gerald@email.com', 'picture':'htts://photos.domain.profile/marlo'},
     {'name':'Whindersson Nunes', 'email':'whinderssonnunes@email.com', 'picture':'htts://photos.domain.profile/marlo'}
     ]
+gamesMock = [
+    {
+        'title':'Doom', 
+        'short_description':'The Doom franchise is a series of first-person'+ 
+    ' shooter video games developed by id Software, and related novels, comics, board games, and film adaptation.', 
+        'long_description': 'Doom is considered to be one of the ' + 
+    'pioneering first-person shooter games, introducing to IBM-compatible computers features' + 
+    ' such as 3D graphics, third-dimension spatiality, networked multiplayer gameplay, and support' + 
+    ' for player-created modifications with the Doom WAD format. Since the release of Doom in 1993,' + 
+    ' the series has spawned numerous sequels, expansion packs, and a film.Since its debut,' + 
+    ' over 10 million copies of games in the Doom series have been sold.',
+        'category_id': '000', 
+        'user_id':'000'
+        },
+    {
+        'title': 'Counter Strike',
+        'short_description':'Counter-Strike is a series of multiplayer' + 
+        ' first-person shooter video games, in which teams of terrorists' + 
+        ' battle to perpetrate an act of terror and counter-terrorists' + 
+        ' try to prevent it. The series began on Windows in 1999' + 
+        ' with the first game, Counter-Strike.',
+        'long_description': 'Counter-Strike (CS) is a series of multiplayer' + 
+        ' first-person shooter video games, in which teams of terrorists' + 
+        ' battle to perpetrate an act of terror (bombing, hostage-taking,' + 
+        ' assassination) and counter-terrorists try to prevent it' + 
+        ' (bomb defusal, hostage rescue). The series began on Windows in' + 
+        ' 1999 with the first game, Counter-Strike. It was initially' + 
+        ' released as a modification ("mod") for Half-Life and designed' + 
+        ' by Minh "Gooseman" Le and Jess "Cliffe" Cliffe before the rights' + 
+        ' to the game\'s intellectual property were acquired by' + 
+            ' Valve Corporation, the developers of Half-Life.',
+            'category_id': '000',
+            'user_id':'000'
+        },
+    {
+        'title': 'Zelda',
+    'short_description':'The Legend of Zelda is a fantasy action-adventure' + 
+    ' video game franchise created by Japanese game designers' + 
+    ' Shigeru Miyamoto and Takashi Tezuka. It is primarily developed ' + 
+    ' and published by Nintendo, although some portable installments' + 
+    ' and re-releases have been outsourced to Capcom, Vanpool, and Grezzo. ',
+    'long_description': 'The Legend of Zelda is a fantasy action-adventure' + 
+    ' video game franchise created by Japanese game designers' + 
+    ' Shigeru Miyamoto and Takashi Tezuka. It is primarily developed ' + 
+    ' and published by Nintendo, although some portable installments' + 
+    ' and re-releases have been outsourced to Capcom, Vanpool,' + 
+    ' and Grezzo. The series gameplay incorporates' + 
+    ' action-adventure and elements of action RPG games.',
+    'category_id': '000',
+    'user_id':'000'}
+    ]
 def shouldAddAnewCategory():
     try:
         for category in categoriesMock:
@@ -88,6 +139,8 @@ def shouldDeleteAuser():
     except Exception as err:
         print('TEST 9 FAILED: shouldDeleteAuser')
         print(err)
+def shouldCreateGames():
+    try:
 
 # shouldAddAnewCategory()
 shouldListAllCategories()
@@ -98,3 +151,4 @@ shouldListUsers()
 shouldListAspecificUser()
 shouldEditAuser()
 shouldDeleteAuser()
+shouldCreateGames()
