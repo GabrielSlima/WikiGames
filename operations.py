@@ -52,6 +52,10 @@ def createCategory(category_title, category_descr, category_user_id):
     session.add(category)
     session.commit()
 
+def listGames():
+    games = session.query(Game).all()
+    return games
+
 def createGame(game_title, game_short_descr, game_long_descr,game_category_id,game_user_id):
     game = Game(title = game_title, short_description = game_short_descr, long_description = game_long_descr, category_id = game_category_id, user_id = game_user_id)
     session.add(game)

@@ -114,7 +114,6 @@ def shouldListUsers():
 def shouldListAspecificUser():
     try:
         user = operations.lisUsers()[len(operations.lisUsers())-1]
-        print(user.id)
         operations.listAspecificUser(user.id)
         print('TEST 7 SUCCESS: shouldListAspecificUser')
     except Exception as err:
@@ -124,7 +123,6 @@ def shouldListAspecificUser():
 def shouldEditAuser():
     try:
         user = operations.lisUsers()[len(operations.lisUsers())-1]
-        print(user.name)
         operations.updateUser(user.id, user.name, user.email, user.picture)
         print('TEST 8 SUCCESS: shouldEditAuser')
     except Exception as err:
@@ -142,20 +140,21 @@ def shouldDeleteAuser():
 def shouldCreateGames():
     try:
         user = operations.lisUsers()[len(operations.lisUsers())-1]
-        print(user)
         category = operations.listCategories()[len(operations.listCategories())-1]
-        print(category)
         for game in gamesMock:
             game['user_id'] = user.id
             game['category_id'] = category.id
-        for game in gamesMock:
-            print(game['user_id'])
-            print(game['category_id'])
         print('TEST 10 SUCCESS: shouldCreateGames')
     except Exception as err:
         print('TEST 10 FAILED: shouldCreateGames')
         print(err)
-
+def shouldListGames():
+    try:
+        operations.listGames()
+        print('TEST 11 SUCCESS: shouldListGames')
+    except Exception as err:
+        print('TEST 11 FAILED: shouldListGames')
+        print(err)
 # shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
@@ -166,3 +165,5 @@ shouldListAspecificUser()
 shouldEditAuser()
 # shouldDeleteAuser()
 shouldCreateGames()
+shouldListGames()
+shouldListAspecificGame()
