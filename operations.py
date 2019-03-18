@@ -52,6 +52,10 @@ def createCategory(category_title, category_descr, category_user_id):
     session.add(category)
     session.commit()
 
+def getGamesByCategory(id_category):
+    games = session.query(Game).filter_by(category_id = id_category)
+    return games
+
 def getGame(game_id):
     game = session.query(Game).filter_by(id = game_id).one()
     return game

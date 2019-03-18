@@ -170,6 +170,15 @@ def shouldListAspecificGame():
         print('TEST 12 FAILED: shouldListAspecificGame')
         print(err)
 
+def shouldListGamesOfAspecificCategory():
+    try:
+        category = operations.listCategories()[len(operations.listCategories())-1]
+        operations.getGamesByCategory(category.id)
+        print('TEST 13 SUCCESS: shouldLishouldListGamesOfAspecificCategorystAspecificGame')
+    except Exception as err:
+        print('TEST 13 FAILED: shouldListGamesOfAspecificCategory')
+        print(err)
+
 # shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
@@ -182,3 +191,6 @@ shouldEditAuser()
 # shouldCreateGames()
 shouldListGames()
 shouldListAspecificGame()
+shouldListGamesOfAspecificCategory()
+shouldEditAspecificGame()
+shouldDeleteAspecificGame()
