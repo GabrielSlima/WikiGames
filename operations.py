@@ -90,6 +90,8 @@ def editGame(game_id, game_title, game_short_descr, game_long_descr,game_categor
     newGame.user_id = game_user_id
     session.add(newGame)
     session.commit()
+    newGame = session.query(Game).filter_by(id = game_id).one()
+    return newGame
 
 def deleteGame(gameId):
     game = session.query(Game).filter_by(id = gameId).one()
