@@ -8,7 +8,7 @@
     <div class="col-sm-8 card">
         <div class="card-body">
                 <h5 class="card-title">{{game.title}}</h5>
-                <p class="card-text">{{game.description}}</p>
+                <p class="card-text">{{game.short_description}}</p>
                 <a class="btn btn-primary" href="{{url_for('editCatalogItem',itemId=game.id)}}">Edit</a>
                 <a class="btn btn-primary" href="{{url_for('deleteCatalogItem', itemId=game.id)}}">Delete</a>
         </div>

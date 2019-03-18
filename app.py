@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request
 from flask import redirect
 from flask import flash
+from flask import url_for
 import operations
 
 app = Flask(__name__)
@@ -78,11 +79,22 @@ def showCatalogItem(genreName, itemId):
     return render_template('showItem.html', game = foundedGame)
     # return render_template('publicShowItem.html', game = gamemock)
     
-@app.route('/catalog/<string:catalog_name>/item/new', methods=['GET', 'POST'])
-def addCatalogItem(catalog_name):
+@app.route('/catalog/<string:catalog_id>/item/new', methods=['GET', 'POST'])
+def addCatalogItem(catalog_id):
+    catalog = operations.getCategory(catalog_id)
     if request.method == 'POST':
-        return 'Voce acaba de inserir um novo game'
-    return render_template('addCatalogItem.html', category=catalog_name)
+        gameTitle = request.form['title']
+        gameShortDescription = request.form['sumary']
+        gameLongDescription = request.form['description']    
+        if gameShortDescription == "":
+            gameShortDescription = "-"
+        if gameLongDescription == "":
+            gameLongDescription = "-"
+        if gameTitle != "":
+            operations.createGame(gameTitle,gameShortDescription,gameLongDescription,catalog_id, '1')
+            return redirect(url_for('showCatalogItems', categoryId = catalog_id))
+    return render_template('addCatalogItem.html', category=catalog)
+
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
     if request.method == 'POST':
