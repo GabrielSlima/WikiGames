@@ -4,6 +4,11 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 session = scoped_session(sessionmaker(bind = engine))
 
+def deleteUser(user_id):
+    user = session.query(User).filter_by(id = user_id).one()
+    session.delete(user)
+    session.commit()
+
 def updateUser(user_id, user_name, user_email, user_picture):
     newUser = session.query(User).filter_by(id = user_id).one()
     newUser.name = user_name

@@ -79,6 +79,16 @@ def shouldEditAuser():
     except Exception as err:
         print('TEST 8 FAILED: shouldEditAuser')
         print(err)
+
+def shouldDeleteAuser():
+    try:
+        user = operations.lisUsers()[len(operations.lisUsers())-1]
+        operations.deleteUser(user.id)
+        print('TEST 9 SUCCESS: shouldDeleteAuser')
+    except Exception as err:
+        print('TEST 9 FAILED: shouldDeleteAuser')
+        print(err)
+
 # shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
@@ -87,3 +97,4 @@ shouldDeleteAcategory()
 shouldListUsers()
 shouldListAspecificUser()
 shouldEditAuser()
+shouldDeleteAuser()
