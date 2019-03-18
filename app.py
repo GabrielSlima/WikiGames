@@ -1,6 +1,9 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+
+import operations
+
 app = Flask(__name__)
 gamemock = {'id': 1,'name': 'Doom', 'description': 'Doom is a first-person shooter video game developed by id Software and published by Bethesda Softworks. A reboot of the Doom franchise, it is the fourth title in the main series and the first major installment since Doom 3 in 2004.'}
 allCategoriesMock = [
@@ -41,7 +44,11 @@ def logout():
 @app.route('/')
 @app.route('/categories')
 def showCategories():
-    return render_template('categories.html', categories=allCategoriesMock, items=gamesListMock)
+    allCategories = operations.listCategories()
+    print(allCategories)
+    lastAddedGames = operations.getLastAddedGames()
+    print(lastAddedGames)
+    return render_template('categories.html', categories=allCategories, items=lastAddedGames)
     # return render_template('publiccategories.html', categories=allCategoriesMock, items=gamesListMock)
 
 @app.route('/category/new', methods=['GET', 'POST'])

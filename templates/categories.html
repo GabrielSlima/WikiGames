@@ -12,9 +12,9 @@
         <div class="card-group">
             <div class="card">
                 <div class="card-body">
-                <h5 class="card-title">{{category['title']}}</h5>
-                <p class="card-text">{{category['description']}}</p>
-                <a class="btn btn-primary" href="{{url_for('showCatalogItems', categoryName=category['title'])}}">See some games</a>
+                <h5 class="card-title">{{category.title}}</h5>
+                <p class="card-text">{{category.description}}</p>
+                <a class="btn btn-primary" href="{{url_for('showCatalogItems', categoryName=category.title)}}">See some games</a>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="card-group">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{item['title']}}</h5>
+                    <h5 class="card-title">{{item.title}}</h5>
                     <a class="#" href="#">DOM</a>
                                 
                 </div>
