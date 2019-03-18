@@ -64,17 +64,17 @@ def shouldAddAnewCategory():
     try:
         for category in categoriesMock:
             operations.createCategory(category['title'],category['description'], '00000')
-        print('TEST 1 SUCCESS: shouldAddAnewCategory')
+        print('TEST 01 SUCCESS: shouldAddAnewCategory')
     except Exception as err:
-        print('TEST 1 FAILED: shouldAddAnewCategory')
+        print('TEST 01 FAILED: shouldAddAnewCategory')
         print(err)
 
 def shouldListAllCategories():
     try:
         operations.listCategories()
-        print('TEST 2 SUCCESS: shouldListAllCategories')
+        print('TEST 02 SUCCESS: shouldListAllCategories')
     except Exception as err:
-        print('TEST 2 FAILED: shouldListAllCategories')
+        print('TEST 02 FAILED: shouldListAllCategories')
         print(err)
 
 def shouldUpdateCategory():
@@ -82,60 +82,60 @@ def shouldUpdateCategory():
         category = operations.listCategories()[len(operations.listCategories())-1]
         newCategory = categoriesMock[0]
         operations.updateCategory(category.id, newCategory['title'], newCategory['description'], category.user_id)
-        print('TEST 3 SUCCESS: shouldUpdateCategory')        
+        print('TEST 03 SUCCESS: shouldUpdateCategory')        
     except Exception as err:
-        print('TEST 3 FAILED: shouldUpdateCategory')
+        print('TEST 03 FAILED: shouldUpdateCategory')
         print(err) 
 def shouldDeleteAcategory():
     try:
         category = operations.listCategories()[len(operations.listCategories())-1]
         operations.deleteCategory(category.id)
-        print('TEST 4 SUCCESS: shouldDeleteAcategory')        
+        print('TEST 04 SUCCESS: shouldDeleteAcategory')        
     except Exception as err:
-        print('TEST 4 FAILED: shouldDeleteAcategory')
+        print('TEST 04 FAILED: shouldDeleteAcategory')
         print(err)
 def shouldCreateUsers():
     try:
         for user in usersMock:
             operations.createUser(user['name'], user['email'], user['picture'])
-        print('TEST 5 SUCCESS: shouldCreateUsers')
+        print('TEST 05 SUCCESS: shouldCreateUsers')
     except Exception as err:
-        print('TEST 5 FAILED: shouldCreateUsers')
+        print('TEST 05 FAILED: shouldCreateUsers')
         print(err)
 
 def shouldListUsers():
     try:
         operations.lisUsers()
-        print('TEST 6 SUCCESS: shouldListUsers')
+        print('TEST 06 SUCCESS: shouldListUsers')
     except Exception as err:
-        print('TEST 6 FAILED: shouldListUsers')
+        print('TEST 06 FAILED: shouldListUsers')
         print(err)
 
 def shouldListAspecificUser():
     try:
         user = operations.lisUsers()[len(operations.lisUsers())-1]
         operations.getUser(user.id)
-        print('TEST 7 SUCCESS: shouldListAspecificUser')
+        print('TEST 07 SUCCESS: shouldListAspecificUser')
     except Exception as err:
-        print('TEST 7 FAILED: shouldListAspecificUser')
+        print('TEST 07 FAILED: shouldListAspecificUser')
         print(err)
 
 def shouldEditAuser():
     try:
         user = operations.lisUsers()[len(operations.lisUsers())-1]
         operations.updateUser(user.id, user.name, user.email, user.picture)
-        print('TEST 8 SUCCESS: shouldEditAuser')
+        print('TEST 08 SUCCESS: shouldEditAuser')
     except Exception as err:
-        print('TEST 8 FAILED: shouldEditAuser')
+        print('TEST 08 FAILED: shouldEditAuser')
         print(err)
 
 def shouldDeleteAuser():
     try:
         user = operations.lisUsers()[len(operations.lisUsers())-1]
         operations.deleteUser(user.id)
-        print('TEST 9 SUCCESS: shouldDeleteAuser')
+        print('TEST 09 SUCCESS: shouldDeleteAuser')
     except Exception as err:
-        print('TEST 9 FAILED: shouldDeleteAuser')
+        print('TEST 09 FAILED: shouldDeleteAuser')
         print(err)
         
 def shouldCreateGames():
@@ -181,21 +181,31 @@ def shouldListGamesOfAspecificCategory():
 def shouldEditAspecificGame():
     try:
         game = operations.listGames()[len(operations.listGames())-1]
-        operations.editGame(game.id,game.title,game.game_short_descr,game.game_long_descr, game.category_id, game.user_id)
+        operations.editGame(game.id,game.title,game.short_description,game.long_description, game.category_id, game.user_id)
         print('TEST 14 SUCCESS: shouldEditAspecificGame')
     except Exception as err:
         print('TEST 14 FAILED: shouldEditAspecificGame')
         print(err)
-# shouldAddAnewCategory()
+
+def shouldDeleteAspecificGame():
+    try:
+        game = operations.listGames()[len(operations.listGames())-1]
+        operations.deleteGame(game.id)
+        print('TEST 15 SUCCESS: shouldDeleteAspecificGame')
+    except Exception as err:
+        print('TEST 15 FAILED: shouldDeleteAspecificGame')
+        print(err)
+
+shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
-# shouldDeleteAcategory()
-# shouldCreateUsers()
+shouldDeleteAcategory()
+shouldCreateUsers()
 shouldListUsers()
 shouldListAspecificUser()
 shouldEditAuser()
-# shouldDeleteAuser()
-# shouldCreateGames()
+shouldDeleteAuser()
+shouldCreateGames()
 shouldListGames()
 shouldListAspecificGame()
 shouldListGamesOfAspecificCategory()
