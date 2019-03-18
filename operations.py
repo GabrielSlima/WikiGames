@@ -17,7 +17,7 @@ def updateUser(user_id, user_name, user_email, user_picture):
     session.add(newUser)
     session.commit()
 
-def listAspecificUser(user_id):
+def getUser(user_id):
     user = session.query(User).filter_by(id = user_id).one()
     return user
 
@@ -52,6 +52,10 @@ def createCategory(category_title, category_descr, category_user_id):
     session.add(category)
     session.commit()
 
+def getGame(game_id):
+    game = session.query(Game).filter_by(id = game_id).one()
+    return game
+
 def listGames():
     games = session.query(Game).all()
     return games
@@ -75,3 +79,4 @@ def deleteGame(gameId):
     game = session.query(Game).filter_by(id = gameId).one()
     session.delete(game)
     session.commit()
+
