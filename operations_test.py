@@ -198,18 +198,19 @@ def shouldDeleteAspecificGame():
         print(err)
 def shouldGetUserIdByEmail():
     try:
-        user = operations.lisUsers()[len(operations.lisUsers())-1]
+        operations.lisUsers()[len(operations.lisUsers())-1]
         print('TEST 16 SUCCESS: shouldGetUserIdByEmail')
     except Exception as err:
         print('TEST 16 FAILED: shouldGetUserIdByEmail')
         print(err)
 def shouldListLimitOfTenGames():
     try:
-        games = operations.getLastAddedGames()
+        operations.getLastAddedGames()
         print('TEST 17 SUCCESS: shouldListLimitOfTenGames')
     except Exception as err:
         print('TEST 17 FAILED: shouldListLimitOfTenGames')
         print(err)
+        
 shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
