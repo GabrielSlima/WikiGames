@@ -64,6 +64,10 @@ def getGame(game_id):
     game = session.query(Game).filter_by(id = game_id).one()
     return game
 
+def getLastAddedGames():
+    games = session.query(Game).limit(10).all()
+    return games
+
 def listGames():
     games = session.query(Game).all()
     return games
