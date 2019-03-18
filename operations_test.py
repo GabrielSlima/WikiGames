@@ -141,14 +141,28 @@ def shouldDeleteAuser():
         print(err)
 def shouldCreateGames():
     try:
+        user = operations.lisUsers()[len(operations.lisUsers())-1]
+        print(user)
+        category = operations.listCategories()[len(operations.listCategories())-1]
+        print(category)
+        for game in gamesMock:
+            game['user_id'] = user.id
+            game['category_id'] = category.id
+        for game in gamesMock:
+            print(game['user_id'])
+            print(game['category_id'])
+        print('TEST 10 SUCCESS: shouldCreateGames')
+    except Exception as err:
+        print('TEST 10 FAILED: shouldCreateGames')
+        print(err)
 
 # shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
-shouldDeleteAcategory()
+# shouldDeleteAcategory()
 # shouldCreateUsers()
 shouldListUsers()
 shouldListAspecificUser()
 shouldEditAuser()
-shouldDeleteAuser()
+# shouldDeleteAuser()
 shouldCreateGames()
