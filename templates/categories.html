@@ -23,12 +23,12 @@
     </div>
     <div class="col-sm-4">
             <h2>Last added</h2>
-        {% for item in items%}
+        {% for game, category in items%}
         <div class="card-group">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{item.title}}</h5>
-                    <a class="#" href="#">DOM</a>
+                    <h5 class="card-title">{{category.title}}</h5>
+                    <a class="#" href="#">{{game.title}}</a>
                                 
                 </div>
             </div>
