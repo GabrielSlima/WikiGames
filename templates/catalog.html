@@ -6,16 +6,16 @@
     
     <div class="row">
         <div class="col-sm-2">
-            <h2>{{category}}</h2>
-            <a href="{{url_for('addCatalogItem', catalog_name=category)}}" class="btn btn-outline-success">Add a new game to this category!</a>
+            <h2>{{category.title}}</h2>
+            <a href="{{url_for('addCatalogItem', catalog_name=category.title)}}" class="btn btn-outline-success">Add a new game to this category!</a>
         </div>
         <div class="col-sm-8">
             {% for item in items %}
             <div class="card-group">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">{{item['title']}}</div>
-                        <div class="card-text">{{item['description']}}</div>
+                        <div class="card-title">{{item.title}}</div>
+                        <div class="card-text">{{item.description}}</div>
                         <a class="btn btn-primary" href="{{url_for('showCatalogItem', genreName=item['category'], itemId=item['id'])}}">Show more about this one</a>
 
                     </div>
