@@ -97,18 +97,31 @@ def addCatalogItem(catalog_id):
 
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
+    game = operations.getGame(itemId)
+    allCategories = operations.listCategories()
     if request.method == 'POST':
-        return 'Voce editou o item.'
+        gameTitle = request.form['title']
+        gameShortDescription = request.form['short_description']
+        gameLongDescription = request.form['long_description']
+        gameCategory = request.form['category']
+        if gameShortDescription is None:
+            gameShortDescription = '-'
+        if gameLongDescription is None:
+            gameLongDescription = '-'
+        if gameTitle is not None:
+            newGame = operations.editGame(itemId, gameTitle, gameShortDescription, gameLongDescription, gameCategory, '1')
+            print(newGame.category_id)
+            return redirect(url_for('showCatalogItems', categoryId = newGame.category_id))
     if request.method == 'GET':
-        return render_template('editCatalogItem.html', item=gamemock, categories=allCategoriesMock)
+        return render_template('editCatalogItem.html', item=game, categories=allCategories)
 
 @app.route('/catalog/<int:itemId>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(itemId):
-    print(request.method)
+    game = operations.getGame(itemId)
     if request.method == 'POST':
         return 'Voce deletou o item.'
     if request.method == 'GET':
-        return render_template('deleteCatalogItem.html', game=gamemock)
+        return render_template('deleteCatalogItem.html', game=game)
 
 if __name__ == '__main__':
     app.debug = True
