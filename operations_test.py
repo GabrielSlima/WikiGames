@@ -209,10 +209,19 @@ def shouldGetUserIdByEmail():
 
 def shouldListLimitOfTenGames():
     try:
-        operations.getLastAddedGames():
+        operations.getLastAddedGames()
         print('TEST 17 SUCCESS: shouldListLimitOfTenGames')
     except Exception as err:
         print('TEST 17 FAILED: shouldListLimitOfTenGames')
+        print(err)
+
+def shouldGetCategoryById():
+    try:
+        category = operations.listCategories()[len(operations.listCategories())-1]
+        operations.getCategory(category.id)
+        print('TEST 18 SUCCESS: shouldGetCategoryById')
+    except Exception as err:
+        print('TEST 18 FAILED: shouldGetCategoryById')
         print(err)
         
 shouldAddAnewCategory()
@@ -232,3 +241,4 @@ shouldEditAspecificGame()
 shouldDeleteAspecificGame()
 shouldGetUserIdByEmail()
 shouldListLimitOfTenGames()
+shouldGetCategoryById()

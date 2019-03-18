@@ -34,6 +34,10 @@ def createUser(user_name, user_email, user_picture):
     session.add(user)
     session.commit()
 
+def getCategory(category_id):
+    category = session.query(Category).filter_by(id = category_id).one()
+    return category
+
 def deleteCategory(category_id):
     category = session.query(Category).filter_by(id = category_id).one()
     session.delete(category)
