@@ -17,6 +17,10 @@ def updateUser(user_id, user_name, user_email, user_picture):
     session.add(newUser)
     session.commit()
 
+def getUserId(user_email):
+    user = session.query(User).filter_by(email = user_email).one()
+    return user.id
+
 def getUser(user_id):
     user = session.query(User).filter_by(id = user_id).one()
     return user
