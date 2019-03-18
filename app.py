@@ -58,16 +58,18 @@ def addCategory():
         print(categoryTitle)
         print(categoryDescription)
         if categoryDescription == "":
-            categoryDescription = None
+            categoryDescription = '-'
         if categoryTitle != "":
             operations.createCategory(categoryTitle, categoryDescription, '1')
             # flash('%s was added to your repository!' % categoryTitle)
         return redirect('/')
     return render_template('addCategory.html')
 
-@app.route('/genre/<string:categoryName>/items')
-def showCatalogItems(categoryName):
-    return render_template('catalog.html', category=categoryName, items = gamesListMock )
+@app.route('/genre/<int:categoryId>/items')
+def showCatalogItems(categoryId):
+    foundedCategory = operations.getCategory(categoryId)
+    gameList = operations.getGamesByCategory(categoryId)
+    return render_template('catalog.html', category = foundedCategory, items = gameList )
     # return render_template('publiccatalog.html', items = gamesListMock )
 
 @app.route('/genre/<string:genreName>/<int:itemId>')
