@@ -65,7 +65,7 @@ def getGame(game_id):
     return game
 
 def getLastAddedGames():
-    games = session.query(Game).limit(10).all()
+    games = session.query(Game, Category).filter(Game.category_id == Category.id).limit(10).all()
     return games
 
 def listGames():

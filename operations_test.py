@@ -87,6 +87,7 @@ def shouldUpdateCategory():
     except Exception as err:
         print('TEST 03 FAILED: shouldUpdateCategory')
         print(err) 
+
 def shouldDeleteAcategory():
     try:
         category = operations.listCategories()[len(operations.listCategories())-1]
@@ -95,6 +96,7 @@ def shouldDeleteAcategory():
     except Exception as err:
         print('TEST 04 FAILED: shouldDeleteAcategory')
         print(err)
+        
 def shouldCreateUsers():
     try:
         for user in usersMock:
@@ -196,6 +198,7 @@ def shouldDeleteAspecificGame():
     except Exception as err:
         print('TEST 15 FAILED: shouldDeleteAspecificGame')
         print(err)
+
 def shouldGetUserIdByEmail():
     try:
         operations.lisUsers()[len(operations.lisUsers())-1]
@@ -203,9 +206,10 @@ def shouldGetUserIdByEmail():
     except Exception as err:
         print('TEST 16 FAILED: shouldGetUserIdByEmail')
         print(err)
+
 def shouldListLimitOfTenGames():
     try:
-        operations.getLastAddedGames()
+        operations.getLastAddedGames():
         print('TEST 17 SUCCESS: shouldListLimitOfTenGames')
     except Exception as err:
         print('TEST 17 FAILED: shouldListLimitOfTenGames')
