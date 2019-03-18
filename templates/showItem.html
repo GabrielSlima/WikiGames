@@ -7,11 +7,10 @@
         <div class="col-sm-2"></div>
     <div class="col-sm-8 card">
         <div class="card-body">
-                <h5 class="card-title">{{game['name']}}</h5>
-                <p class="card-text">{{game['description']}}</p>
-
-                <a class="btn btn-primary" href="{{url_for('editCatalogItem',itemId=game['id'])}}">Edit</a>
-                <a class="btn btn-primary" href="{{url_for('deleteCatalogItem', itemId=game['id'])}}">Delete</a>
+                <h5 class="card-title">{{game.title}}</h5>
+                <p class="card-text">{{game.description}}</p>
+                <a class="btn btn-primary" href="{{url_for('editCatalogItem',itemId=game.id)}}">Edit</a>
+                <a class="btn btn-primary" href="{{url_for('deleteCatalogItem', itemId=game.id)}}">Delete</a>
         </div>
     </div>
     <div class="col-sm-2"></div>

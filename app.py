@@ -74,7 +74,8 @@ def showCatalogItems(categoryId):
 
 @app.route('/genre/<string:genreName>/<int:itemId>')
 def showCatalogItem(genreName, itemId):
-    return render_template('showItem.html', game = gamemock)
+    foundedGame = operations.getGame(itemId)
+    return render_template('showItem.html', game = foundedGame)
     # return render_template('publicShowItem.html', game = gamemock)
     
 @app.route('/catalog/<string:catalog_name>/item/new', methods=['GET', 'POST'])
