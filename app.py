@@ -45,10 +45,8 @@ def logout():
 @app.route('/categories')
 def showCategories():
     allCategories = operations.listCategories()
-    print(allCategories)
-    lastAddedGames = operations.getLastAddedGames()
-    print(lastAddedGames)
-    return render_template('categories.html', categories=allCategories, items=lastAddedGames)
+    lastAddedGamesAndYourCategories = operations.getLastAddedGames()
+    return render_template('categories.html', categories=allCategories, items=lastAddedGamesAndYourCategories)
     # return render_template('publiccategories.html', categories=allCategoriesMock, items=gamesListMock)
 
 @app.route('/category/new', methods=['GET', 'POST'])
