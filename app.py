@@ -1,7 +1,8 @@
 from flask import Flask
 from flask import render_template
 from flask import request
-
+from flask import redirect
+from flask import flash
 import operations
 
 app = Flask(__name__)
@@ -52,7 +53,16 @@ def showCategories():
 @app.route('/category/new', methods=['GET', 'POST'])
 def addCategory():
     if request.method == 'POST':
-        return 'You added a new category'
+        categoryTitle = request.form['title']
+        categoryDescription = request.form['description']
+        print(categoryTitle)
+        print(categoryDescription)
+        if categoryDescription == "":
+            categoryDescription = None
+        if categoryTitle != "":
+            operations.createCategory(categoryTitle, categoryDescription, '1')
+            # flash('%s was added to your repository!' % categoryTitle)
+        return redirect('/')
     return render_template('addCategory.html')
 
 @app.route('/genre/<string:categoryName>/items')
