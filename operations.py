@@ -4,6 +4,22 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 session = scoped_session(sessionmaker(bind = engine))
 
+def updateUser(user_id, user_name, user_email, user_picture):
+    newUser = session.query(User).filter_by(id = user_id).one()
+    newUser.name = user_name
+    newUser.email = user_email
+    newUser.picture = user_picture
+    session.add(newUser)
+    session.commit()
+
+def listAspecificUser(user_id):
+    user = session.query(User).filter_by(id = user_id).one()
+    return user
+
+def lisUsers():
+    users = session.query(User).all()
+    return users
+
 def createUser(user_name, user_email, user_picture):
     user = User(name = user_name, email = user_email, picture = user_picture)
     session.add(user)

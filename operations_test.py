@@ -47,15 +47,43 @@ def shouldCreateUsers():
     try:
         for user in usersMock:
             operations.createUser(user['name'], user['email'], user['picture'])
-        print('TEST 5 FAILED: shouldCreateUsers')
+        print('TEST 5 SUCCESS: shouldCreateUsers')
     except Exception as err:
         print('TEST 5 FAILED: shouldCreateUsers')
         print(err)
 
+def shouldListUsers():
+    try:
+        operations.lisUsers()
+        print('TEST 6 SUCCESS: shouldListUsers')
+    except Exception as err:
+        print('TEST 6 FAILED: shouldListUsers')
+        print(err)
+
+def shouldListAspecificUser():
+    try:
+        user = operations.lisUsers()[len(operations.lisUsers())-1]
+        print(user.id)
+        operations.listAspecificUser(user.id)
+        print('TEST 7 SUCCESS: shouldListAspecificUser')
+    except Exception as err:
+        print('TEST 7 FAILED: shouldListAspecificUser')
+        print(err)
+
+def shouldEditAuser():
+    try:
+        user = operations.lisUsers()[len(operations.lisUsers())-1]
+        print(user.name)
+        operations.updateUser(user.id, user.name, user.email, user.picture)
+        print('TEST 8 SUCCESS: shouldEditAuser')
+    except Exception as err:
+        print('TEST 8 FAILED: shouldEditAuser')
+        print(err)
 # shouldAddAnewCategory()
 shouldListAllCategories()
 shouldUpdateCategory()
 shouldDeleteAcategory()
-shouldCreateUsers()
+# shouldCreateUsers()
 shouldListUsers()
 shouldListAspecificUser()
+shouldEditAuser()
