@@ -1,5 +1,6 @@
 import json
 import httplib2
+import pprint
 class LoginBusiness:
     FACEBOOK_CLIENT_ID = ''
     FACEBOOK_CLIENT_SECRET = ''
@@ -7,7 +8,7 @@ class LoginBusiness:
     USER_EMAIL = ''
     USER_NAME = ''
     USER_ID = ''
-
+    USER_PHOTO = ''
     def validateUserSession(self, tokenSessionAfterGetRequest, tokenSessionAfterPostRequest):
         if tokenSessionAfterGetRequest == tokenSessionAfterPostRequest:
             return True
@@ -46,10 +47,20 @@ class LoginBusiness:
             return False
         data = json.loads(content)
         self.setUserEmail(data['email'])
-        self.setUserName(data['username'])
+        self.setUserName(data['name'])
         self.setUserId(data['id'])
         return True
-        
+    
+    def getUserProfilePhoto(self,token):
+        url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+        http = httplib2.Http()
+        header, content = http.request(url, 'GET')
+        if header['status'] != '200':
+            return False
+        data = json.loads(content)
+        self.setProfilePhoto(data['data']['url'])
+        return True
+
     def setFacebookClientId(self,client_id):
         self.FACEBOOK_CLIENT_ID = client_id
 
@@ -70,8 +81,24 @@ class LoginBusiness:
     
     def setUserEmail(self, userEmail):
         self.USER_EMAIL = userEmail
+
     def setUserName(self, username):
         self.USER_NAME = username
     
     def setUserId(self, id):
         self.USER_ID = id
+
+    def getUserEmail(self):
+        return self.USER_EMAIL
+        
+    def getUserName(self):
+        return self.USER_NAME
+    
+    def getUserId(self):
+        return self.USER_ID
+    
+    def setProfilePhoto(self, profilePhotoAddress):
+        self.USER_PHOTO = profilePhotoAddress
+
+    def getProfilePhoto(self):
+        return self.USER_PHOTO
