@@ -1,6 +1,6 @@
 import loginBusiness
 import uuid
-import unittest
+import httplib2
 
 class loginBusinessTests():
     requests = ['GET', 'POST']
@@ -41,9 +41,21 @@ class loginBusinessTests():
         else:
             print('TEST 4 FAILED: shouldThrowExceptionWhenHasNoClientSecretsFile')
 
+    def shouldThrowExceptionWhenRequestDataIsIncorrect(self):
+        app_id = 'id'
+        app_secret = 'secret'
+        access_token = 'token'
+        if not loginBusiness.LoginBusiness().getLongTermAccessToken(app_id,app_secret,access_token):
+            print('TEST 5 SUCCESS: shouldThrowExceptionWhenRequestDataIsIncorrect')
+        else:
+            print('TEST 5 FAILED: shouldThrowExceptionWhenRequestDataIsIncorrect')
 
+
+        
+            
 tests = loginBusinessTests()
 tests.tokenValidationShouldBeTrue()
 tests.tokenValidationShouldBeFalse()
 tests.checkIfUserWasAlreadyLogged()
 tests.shouldThrowExceptionWhenHasNoClientSecretsFile()
+tests.shouldThrowExceptionWhenRequestDataIsIncorrect()
