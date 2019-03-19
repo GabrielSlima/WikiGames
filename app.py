@@ -48,7 +48,7 @@ def login():
             response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
             response.headers['Content-Type'] = 'application/json'
             return response
-        if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('user_token')):
+        if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('access_token')):
             response = make_response(json.dumps('The user was already logged...'),200)
             response.headers['Content-Type'] = 'application/json'
             return response
@@ -60,8 +60,19 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response
             facebookLongTermAccessToken = loginbusiness.getLongTermAccessTokenFromFacebook()
-            print(facebookLongTermAccessToken)
+            login_session['access_token'] = facebookLongTermAccessToken
+            loginbusiness.getFacebookUserInfos(login_session['access_token'])
             
+            login_session['user_id_facebook'] = loginbusiness.getUserId()
+            login_session['username'] = loginbusiness.getUserName()
+            login_session['email'] = loginbusiness.getUserEmail()
+
+            if not loginbusiness.getUserProfilePhoto(login_session['access_token']):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+            login_session['picture'] = loginbusiness.getProfilePhoto()
+
         return 'asdasd'
     if request.method == "GET":
         state = str(uuid.uuid4())
