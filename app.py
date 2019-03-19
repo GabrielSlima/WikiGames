@@ -90,11 +90,14 @@ def logout():
 def showCategories():
     allCategories = operations.listCategories()
     lastAddedGamesAndYourCategories = operations.getLastAddedGames()
-    return render_template('categories.html', categories=allCategories, items=lastAddedGamesAndYourCategories)
-    # return render_template('publiccategories.html', categories=allCategoriesMock, items=gamesListMock)
+    if 'username' in login_session:
+        return render_template('categories.html', categories=allCategories, items=lastAddedGamesAndYourCategories)
+    return render_template('publiccategories.html', categories=allCategories, items=lastAddedGamesAndYourCategories)
 
 @app.route('/category/new', methods=['GET', 'POST'])
 def addCategory():
+    if 'username' not in login_session:
+        redirect('/')
     if request.method == 'POST':
         categoryTitle = request.form['title']
         categoryDescription = request.form['description']
@@ -111,26 +114,30 @@ def showCatalogItems(categoryId):
     try:
         foundedCategory = operations.getCategory(categoryId)
         gameList = operations.getGamesByCategory(categoryId)
+        if 'username' not in login_session:
+            return render_template('publiccatalog.html', category = foundedCategory, items = gameList )
         return render_template('catalog.html', category = foundedCategory, items = gameList )
     except Exception:
         response = make_response(json.dumps('There is no items related with this category id...'),404)
         response.headers['Content-Type'] = 'application/json'
         return response
-    # return render_template('publiccatalog.html', items = gamesListMock )
 
 @app.route('/genre/<string:genreName>/<int:itemId>')
 def showCatalogItem(genreName, itemId):
     try:
         foundedGame = operations.getGame(itemId)
+        if 'username' not in login_session:
+            return render_template('publicShowItem.html', game = foundedGame)
         return render_template('showItem.html', game = foundedGame)
     except Exception:
         response = make_response(json.dumps('There is no game related to this game id...'),404)
         response.headers['Content-Type'] = 'application/json'
         return response
-    # return render_template('publicShowItem.html', game = gamemock)
     
 @app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
 def addCatalogItem(catalog_id):
+    if 'username' not in login_session:
+        redirect('/')
     try: 
         catalog = operations.getCategory(catalog_id)
     except Exception:
@@ -152,6 +159,8 @@ def addCatalogItem(catalog_id):
 
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
+    if 'username' not in:
+        redirect('/')
     try:
         game = operations.getGame(itemId)
         allCategories = operations.listCategories()
@@ -177,6 +186,8 @@ def editCatalogItem(itemId):
 
 @app.route('/catalog/<int:itemId>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(itemId):
+    if 'username' not in login_session:
+        redirect('/')
     try:
         game = operations.getGame(itemId)
         gameCategory = game.category_id
