@@ -17,7 +17,6 @@ class LoginBusiness:
     def checkIfFacebookClientSecretsExists(self):
         try:
             facebookSecrets = open('fb_ecrets.json','r').read()
-
         except FileNotFoundError:
             return False
 
