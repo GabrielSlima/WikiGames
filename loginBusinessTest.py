@@ -51,11 +51,12 @@ class loginBusinessTests():
             print('TEST 5 FAILED: shouldThrowExceptionWhenRequestDataIsIncorrect')
 
 
-        
-            
+    def shouldThrowExceptionWhenLongTermTokenIsInvalid(self):
+        token = str(uuid.uuid4)
+        if not loginBusiness.LoginBusiness().getFacebookUserInfos():
+
+
 tests = loginBusinessTests()
-tests.tokenValidationShouldBeTrue()
-tests.tokenValidationShouldBeFalse()
-tests.checkIfUserWasAlreadyLogged()
 tests.shouldThrowExceptionWhenHasNoClientSecretsFile()
 tests.shouldThrowExceptionWhenRequestDataIsIncorrect()
+tests.shouldThrowExceptionWhenLongTermTokenIsInvalid()

@@ -4,6 +4,9 @@ class LoginBusiness:
     FACEBOOK_CLIENT_ID = ''
     FACEBOOK_CLIENT_SECRET = ''
     LONG_TERM_ACCESS_TOKEN= ''
+    USER_EMAIL = ''
+    USER_NAME = ''
+    USER_ID = ''
 
     def validateUserSession(self, tokenSessionAfterGetRequest, tokenSessionAfterPostRequest):
         if tokenSessionAfterGetRequest == tokenSessionAfterPostRequest:
@@ -34,6 +37,19 @@ class LoginBusiness:
             return False
         self.setLongTermAccessToken(json.loads(content.decode('utf-8'))['access_token'])
         return True
+    
+    def getFacebookUserInfos(self, token):
+        url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
+        http = httplib2.Http()
+        header, content = http.request(url, 'GET')
+        if header['status'] != '200':
+            return False
+        data = json.loads(content)
+        self.setUserEmail(data['email'])
+        self.setUserName(data['username'])
+        self.setUserId(data['id'])
+        return True
+        
     def setFacebookClientId(self,client_id):
         self.FACEBOOK_CLIENT_ID = client_id
 
@@ -51,3 +67,11 @@ class LoginBusiness:
     
     def getLongTermAccessTokenFromFacebook(self):
         return self.LONG_TERM_ACCESS_TOKEN
+    
+    def setUserEmail(self, userEmail):
+        self.USER_EMAIL = userEmail
+    def setUserName(self, username):
+        self.USER_NAME = username
+    
+    def setUserId(self, id):
+        self.USER_ID = id
