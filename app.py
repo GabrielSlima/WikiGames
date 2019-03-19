@@ -5,9 +5,13 @@ from flask import redirect
 from flask import flash
 from flask import url_for
 from flask import make_response
-import json
-import operations
+from flask import session as login_session
 
+import json
+import uuid
+
+import operations
+import loginBusiness
 app = Flask(__name__)
 gamemock = {'id': 1,'name': 'Doom', 'description': 'Doom is a first-person shooter video game developed by id Software and published by Bethesda Softworks. A reboot of the Doom franchise, it is the fourth title in the main series and the first major installment since Doom 3 in 2004.'}
 allCategoriesMock = [
@@ -35,9 +39,16 @@ gamesListMock = [
     'category':'80s fps',
     'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, lorem nec mollis ullamcorper, magna nulla lobortis eros, quis feugiat orci ipsum ac lorem. Sed aliquam nisi at dolor volutpat pharetra. Nam tincidunt sagittis risus. Suspendisse egestas gravida faucibus. Mauris viverra tortor ut semper pretium. In tincidunt tellus sed tincidunt hendrerit. Phasellus sem velit, auctor sed erat in, egestas consectetur nisi. Nunc at porttitor nulla. Integer nec lorem luctus, vestibulum diam eget, mollis elit. In at odio non nisl rhoncus scelerisque. Vivamus at hendrerit mauris, non feugiat metus. Nunc velit leo, consectetur in lorem sit amet, sollicitudin ullamcorper orci. Nam eget fermentum libero. Phasellus viverra nisi lobortis felis sodales, sed faucibus arcu molestie.'
     }]
-@app.route('/login')
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == "POST":
+        if not loginBusiness.validateUserSession(login_session['user_token'], request.args.get('state')):
+            return 'We should process the token'
+    if request.method == "GET":
+        state = str(uuid.uuid4())
+        login_session['user_token'] = state
+        return render_template('login.html', STATE=state)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -159,5 +170,6 @@ def deleteCatalogItem(itemId):
         return render_template('deleteCatalogItem.html', game=game)
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
