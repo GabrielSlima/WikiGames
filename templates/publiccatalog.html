@@ -4,15 +4,18 @@
 <br>
 <div class="container">
     <div class="row">
-        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+            <h2>{{category.title}}</h2>
+        </div>
         <div class="col-sm-8">
             {% for item in items %}
             <div class="card-group">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">{{item['title']}}</div>
-                        <div class="card-text">{{item['description']}}</div>
-                        <a class="btn btn-primary" href="{{url_for('showCatalogItem', genreName=item['category'], itemId=item['id'])}}">Show more about this one</a>
+                        <div class="card-title">{{item.title}}</div>
+                        <div class="card-text">{{item.short_description}}</div>
+                        <div class="card-text">{{item.long_description}}</div>
+                        <a class="btn btn-primary" href="{{url_for('showCatalogItem', genreName=category.title, itemId=item.id)}}">Show more about this one</a>
 
                     </div>
                 </div>

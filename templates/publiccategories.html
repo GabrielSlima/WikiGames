@@ -10,9 +10,9 @@
         <div class="card-group">
             <div class="card">
                 <div class="card-body">
-                <h5 class="card-title">{{category['title']}}</h5>
-                <p class="card-text">{{category['description']}}</p>
-                <a class="btn btn-primary" href="{{url_for('showCatalogItems', categoryName=category['title'])}}">See some games</a>
+                <h5 class="card-title">{{category.title}}</h5>
+                <p class="card-text">{{category.description}}</p>
+                <a class="btn btn-primary" href="{{url_for('showCatalogItems', categoryId=category.id))}}">See some games</a>
                 </div>
             </div>
         </div>
@@ -20,19 +20,19 @@
         {% endfor%}
     </div>
     <div class="col-sm-4">
-            <h2>Last added</h2>
-        {% for item in items%}
-        <div class="card-group">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{item['title']}}</h5>
-                    <a class="#" href="#">DOM</a>
-                                
+            <h2>Last added games</h2>
+            {% for game, category in items%}
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{category.title}}</h5>
+                        <a class="" href="{{url_for('showCatalogItem', genreName=category.title, itemId=game.id)}}">{{game.title}}</a>
+                                    
+                    </div>
                 </div>
             </div>
-        </div>
-        <br>
-        {% endfor%}
+            <br>
+            {% endfor%}
     </div>
 </div>
 </div>
