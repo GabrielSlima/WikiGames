@@ -1,8 +1,44 @@
 {% extends "main.html"%}
 {% include "headerpublic.html"%}
 {% block content%}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  		<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+<script>
+    window.fbAsyncInit = function() {
+    FB.init({
+    appId            : '1940200469439661',
+    autoLogAppEvents : true,
+    xfbml            : true,
+    version          : 'v2.9'
+    });
+};
+function sendTokenToServer(response) {
+    var accessToken = FB.getAuthResponse()['accessToken'];
+    FB.api('/me', function(response){
+        console.log(response);
+        $.ajax ({
+            type: 'POST',
+            url: '/login?platform=facebook&state={{STATE}}',
+            processData: false,
+            data: accessToken,
+            contentType: 'application/actect-stream; charset=utf-8',
+            success: function(result){
+                if(result){
+                    $('#callbackResponse').html('<span>Welcome'  + 'You are authenticated now, take your time!</span>');
+                    setTimeout(function(){ window.location.href="/"}, 5000);
+                }
+                else {
+                    $('#callbackResponse').html('<span>Unfortunately we got an error trying to log in you, sorry about that, we will resolve this so soon...</span>');
+                }
+            }
+        });
+    });
+}
+</script>
+<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 <br>
 <main class="container">
+    <div id="callbackResponse"></div>
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
@@ -10,7 +46,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">You are log in right now, welcome!</h5>
-                        <button class="btn btn-primary">Facebook</button>
+                        <div id="fb-root"></div>
+                        <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();"></fb:login-button>
                         <button class="btn btn-danger">Google+</button>
                     </div>
                 </div>
@@ -18,4 +55,6 @@
         </div>
     </div>
 </main>
+
+
 {% endblock%}
