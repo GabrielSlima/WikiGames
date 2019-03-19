@@ -72,8 +72,8 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response
             login_session['picture'] = loginbusiness.getProfilePhoto()
-
-        return 'asdasd'
+            login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
+        return True
     if request.method == "GET":
         state = str(uuid.uuid4())
         login_session['user_token'] = state
@@ -98,8 +98,6 @@ def addCategory():
     if request.method == 'POST':
         categoryTitle = request.form['title']
         categoryDescription = request.form['description']
-        print(categoryTitle)
-        print(categoryDescription)
         if categoryDescription == "":
             categoryDescription = '-'
         if categoryTitle != "":
