@@ -58,6 +58,12 @@ class loginBusinessTests():
         else:
             print('TEST 6 FAILED: shouldThrowExceptionWhenLongTermTokenIsInvalid')
 
+    def shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto(self):
+        token = str(uuid.uuid4)
+        if not loginBusiness.LoginBusiness().getUserProfilePhoto(token):
+            print('TEST 7 SUCCESS: shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto')
+        else:
+            print('TEST 7 FAILED: shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto')
 
 tests = loginBusinessTests()
 tests.tokenValidationShouldBeTrue()
@@ -66,3 +72,4 @@ tests.checkIfUserWasAlreadyLogged()
 tests.shouldThrowExceptionWhenHasNoClientSecretsFile()
 tests.shouldThrowExceptionWhenRequestDataIsIncorrect()
 tests.shouldThrowExceptionWhenLongTermTokenIsInvalid()
+tests.shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto()
