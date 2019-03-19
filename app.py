@@ -70,20 +70,35 @@ def addCategory():
 
 @app.route('/genre/<int:categoryId>/items')
 def showCatalogItems(categoryId):
-    foundedCategory = operations.getCategory(categoryId)
-    gameList = operations.getGamesByCategory(categoryId)
-    return render_template('catalog.html', category = foundedCategory, items = gameList )
+    try:
+        foundedCategory = operations.getCategory(categoryId)
+        gameList = operations.getGamesByCategory(categoryId)
+        return render_template('catalog.html', category = foundedCategory, items = gameList )
+    except Exception:
+        response = make_response(json.dumps('There is no items related with this category id...'),404)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     # return render_template('publiccatalog.html', items = gamesListMock )
 
 @app.route('/genre/<string:genreName>/<int:itemId>')
 def showCatalogItem(genreName, itemId):
-    foundedGame = operations.getGame(itemId)
-    return render_template('showItem.html', game = foundedGame)
+    try:
+        foundedGame = operations.getGame(itemId)
+        return render_template('showItem.html', game = foundedGame)
+    except Exception:
+        response = make_response(json.dumps('There is no game related to this game id...'),404)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     # return render_template('publicShowItem.html', game = gamemock)
     
-@app.route('/catalog/<string:catalog_id>/item/new', methods=['GET', 'POST'])
+@app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
 def addCatalogItem(catalog_id):
-    catalog = operations.getCategory(catalog_id)
+    try: 
+        catalog = operations.getCategory(catalog_id)
+    except Exception:
+        response = make_response(json.dumps('There is no category related with this category id...'),404)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     if request.method == 'POST':
         gameTitle = request.form['title']
         gameShortDescription = request.form['sumary']
@@ -99,8 +114,13 @@ def addCatalogItem(catalog_id):
 
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
-    game = operations.getGame(itemId)
-    allCategories = operations.listCategories()
+    try:
+        game = operations.getGame(itemId)
+        allCategories = operations.listCategories()
+    except Exception:
+        response = make_response(json.dumps('There is no item related with this item id...'),404)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     if request.method == 'POST':
         gameTitle = request.form['title']
         gameShortDescription = request.form['short_description']

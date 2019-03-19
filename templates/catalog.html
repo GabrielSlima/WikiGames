@@ -16,7 +16,8 @@
                     <div class="card-body">
                         <div class="card-title">{{item.title}}</div>
                         <div class="card-text">{{item.short_description}}</div>
-                        <a class="btn btn-primary" href="{{url_for('showCatalogItem', genreName=item['category'], itemId=item['id'])}}">Show more about this one</a>
+                        <div class="card-text">{{item.long_description}}</div>
+                        <a class="btn btn-primary" href="{{url_for('showCatalogItem', genreName=category.title, itemId=item.id)}}">Show more about this one</a>
 
                     </div>
                 </div>
