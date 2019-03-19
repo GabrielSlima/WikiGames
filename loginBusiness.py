@@ -1,6 +1,8 @@
 import json
 import httplib2
 import pprint
+import operations
+
 class LoginBusiness:
     FACEBOOK_CLIENT_ID = ''
     FACEBOOK_CLIENT_SECRET = ''
@@ -61,6 +63,14 @@ class LoginBusiness:
         self.setProfilePhoto(data['data']['url'])
         return True
 
+    def getLocalUserId(self, login_session):
+        id = operations.getUserId(login_session['email'])
+        if id is None:
+            id = operations.createUser(login_session['username'],login_session['email'],login_session['picture'])
+        self.setLocalUserId(id)
+        print(id)
+        return id
+
     def setFacebookClientId(self,client_id):
         self.FACEBOOK_CLIENT_ID = client_id
 
@@ -102,3 +112,6 @@ class LoginBusiness:
 
     def getProfilePhoto(self):
         return self.USER_PHOTO
+
+    def setLocalUserId(self, localUserId):
+        self.LOCAL_USER_ID = localUserId
