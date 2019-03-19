@@ -9,8 +9,8 @@
             <div class="card-group">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">You are <b>DELETING</b> the game {{game['name']}}</h5>
-                        <form action="{{url_for('deleteCatalogItem', itemId=game['id'])}}" method="DELETE">
+                        <h5 class="card-title">You are <b>DELETING</b> the game {{game.title}}</h5>
+                        <form action="{{url_for('deleteCatalogItem', itemId=game.id)}}" method="POST">
                             <span>Are you sure that you wanna contine?!</span>
                             <br>
                             <br>

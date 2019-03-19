@@ -4,6 +4,8 @@ from flask import request
 from flask import redirect
 from flask import flash
 from flask import url_for
+from flask import make_response
+import json
 import operations
 
 app = Flask(__name__)
@@ -117,9 +119,22 @@ def editCatalogItem(itemId):
 
 @app.route('/catalog/<int:itemId>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(itemId):
-    game = operations.getGame(itemId)
+    try:
+        game = operations.getGame(itemId)
+        gameCategory = game.category_id
+    except Exception:
+        response = make_response(json.dumps('This game id does not exists on our reposiotry.'), 404)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     if request.method == 'POST':
-        return 'Voce deletou o item.'
+        try:
+            operations.deleteGame(itemId)
+            # flash
+            return redirect(url_for('showCatalogItems', categoryId=gameCategory))
+        except:
+            response = make_response(json.dumps('An error has occured, please contact the administrators or try agin later...'), 500)
+            response.headers['Content-Type'] = 'application/json'
+            return response
     if request.method == 'GET':
         return render_template('deleteCatalogItem.html', game=game)
 
