@@ -43,18 +43,26 @@ gamesListMock = [
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
-        if not loginBusiness.validateUserSession(login_session['user_token'], request.args.get('state')):
+        loginbusiness = loginBusiness.LoginBusiness()
+        if not loginbusiness.validateUserSession(login_session['user_token'], request.args.get('state')):
             response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
             response.headers['Content-Type'] = 'application/json'
             return response
-        if loginBusiness.checkIfUserWasAlreadyLogged(login_session.get('user_token')):
+        if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('user_token')):
             response = make_response(json.dumps('The user was already logged...'),200)
             response.headers['Content-Type'] = 'application/json'
             return response
         if request.args.get('platform') == 'facebook':
+            facebookAccessToken = request.data.decode('utf-8')
+            loginbusiness.checkIfFacebookClientSecretsExists()
+            if not loginbusiness.getLongTermAccessToken(loginbusiness.getFacebookClientId(), loginbusiness.getFacebookClientSecret(),facebookAccessToken):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+            facebookLongTermAccessToken = loginbusiness.getLongTermAccessTokenFromFacebook()
+            print(facebookLongTermAccessToken)
             
-        facebookAccessToken = request.data.decode('utf-8')
-
+        return 'asdasd'
     if request.method == "GET":
         state = str(uuid.uuid4())
         login_session['user_token'] = state
