@@ -73,7 +73,7 @@ def login():
                 return response
             login_session['picture'] = loginbusiness.getProfilePhoto()
             login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
-        return True
+        return 'Logged with success!'
     if request.method == "GET":
         state = str(uuid.uuid4())
         login_session['user_token'] = state
@@ -97,7 +97,7 @@ def showCategories():
 @app.route('/category/new', methods=['GET', 'POST'])
 def addCategory():
     if 'username' not in login_session:
-        redirect('/')
+        return redirect('/')
     if request.method == 'POST':
         categoryTitle = request.form['title']
         categoryDescription = request.form['description']
@@ -137,7 +137,7 @@ def showCatalogItem(genreName, itemId):
 @app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
 def addCatalogItem(catalog_id):
     if 'username' not in login_session:
-        redirect('/')
+        return redirect('/')
     try: 
         catalog = operations.getCategory(catalog_id)
     except Exception:
@@ -159,8 +159,8 @@ def addCatalogItem(catalog_id):
 
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
-    if 'username' not in:
-        redirect('/')
+    if 'username' not in login_session:
+        return redirect('/')
     try:
         game = operations.getGame(itemId)
         allCategories = operations.listCategories()
@@ -187,7 +187,7 @@ def editCatalogItem(itemId):
 @app.route('/catalog/<int:itemId>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(itemId):
     if 'username' not in login_session:
-        redirect('/')
+        return redirect('/')
     try:
         game = operations.getGame(itemId)
         gameCategory = game.category_id
