@@ -186,7 +186,10 @@ def showCatalogItem(genreName, itemId):
     try:
         foundedGame = operations.getGame(itemId)
         if 'username' not in login_session:
-            return render_template('publicShowItem.html', game = foundedGame)
+            return render_template('publicShowItem.html', game = foundedGame, isAuthor=False)
+
+        if login_session.get('local_user_id') != foundedGame.user_id:
+            return render_template('publicShowItem.html', game = foundedGame, isLoged=True)
         return render_template('showItem.html', game = foundedGame)
     except Exception:
         response = make_response(json.dumps('There is no game related to this game id...'),404)
@@ -218,10 +221,10 @@ def addCatalogItem(catalog_id):
 
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
-    if 'username' not in login_session:
+    game = operations.getGame(itemId)
+    if 'username' not in login_session or login_session.get('local_user_id') != game.user_id:
         return redirect('/')
     try:
-        game = operations.getGame(itemId)
         allCategories = operations.listCategories()
     except Exception:
         response = make_response(json.dumps('There is no item related with this item id...'),404)
@@ -245,10 +248,11 @@ def editCatalogItem(itemId):
 
 @app.route('/catalog/<int:itemId>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(itemId):
-    if 'username' not in login_session:
+    game = operations.getGame(itemId)
+    if 'username' not in login_session or login_session.get('local_user_id') != game.user_id:
         return redirect('/')
     try:
-        game = operations.getGame(itemId)
+       
         gameCategory = game.category_id
     except Exception:
         response = make_response(json.dumps('This game id does not exists on our reposiotry.'), 404)
