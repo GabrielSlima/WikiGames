@@ -4,8 +4,8 @@ import pprint
 import operations
 
 class LoginBusiness:
-    FACEBOOK_CLIENT_ID = ''
-    FACEBOOK_CLIENT_SECRET = ''
+    CLIENT_ID = ''
+    CLIENT_SECRET = ''
     LONG_TERM_ACCESS_TOKEN= ''
     USER_EMAIL = ''
     USER_NAME = ''
@@ -23,11 +23,11 @@ class LoginBusiness:
         else:
             return False
 
-    def checkIfFacebookClientSecretsExists(self):
+    def checkIfFacebookClientSecretsExists(self, fbSecretsFileNameWithExtension):
         try:
-            facebookSecrets = open('fb_secrets.json','r').read()
-            self.setFacebookClientId(json.loads(facebookSecrets)['web']['client_id'])
-            self.setFacebookClientSecret(json.loads(facebookSecrets)['web']['client_secret'])
+            facebookSecrets = open(fbSecretsFileNameWithExtension,'r').read()
+            self.setClientId(json.loads(facebookSecrets)['web']['client_id'])
+            self.setClientSecret(json.loads(facebookSecrets)['web']['client_secret'])
             return True
         except FileNotFoundError:
             return False
@@ -71,17 +71,25 @@ class LoginBusiness:
         print(id)
         return id
 
-    def setFacebookClientId(self,client_id):
-        self.FACEBOOK_CLIENT_ID = client_id
+    def readGoogleSecretsData(self,googleSecretsFileNameWithExtension):
+        try:
+            googleSecrets = open(googleSecretsFileNameWithExtension, 'r').read()
+            self.setClientId(json.loads(googleSecrets)['web']['client_id'])
+            return True
+        except FileNotFoundError:
+            return False
+            
+    def setClientId(self,client_id):
+        self.CLIENT_ID = client_id
 
-    def setFacebookClientSecret(self,client_secret):
-        self.FACEBOOK_CLIENT_SECRET = client_secret
+    def setClientSecret(self,client_secret):
+        self.CLIENT_SECRET = client_secret
 
-    def getFacebookClientId(self):
-        return self.FACEBOOK_CLIENT_ID
+    def getClientId(self):
+        return self.CLIENT_ID
 
-    def getFacebookClientSecret(self):
-        return self.FACEBOOK_CLIENT_SECRET
+    def getClientSecret(self):
+        return self.CLIENT_SECRET
     
     def setLongTermAccessToken(self, longTermAccessToken):
         self.LONG_TERM_ACCESS_TOKEN = longTermAccessToken
