@@ -1,7 +1,9 @@
 import loginBusiness
 import uuid
 import httplib2
-
+from tempfile import gettempdir
+import os
+import json
 class loginBusinessTests():
     requests = ['GET', 'POST']
     tokenSessionAfterGetRequest = ''
@@ -71,6 +73,17 @@ class loginBusinessTests():
         else:
             print('TEST 8 FAILED: shouldThrowExceptionIfClientSecretsFileDoesNotExists')
 
+    def shouldThrowExceptionWhenTheClientIdIsNotPresent(self):
+        absoluteTempFilePath = os.path.join(gettempdir(),'googleSecretsFile.json')
+        fakeData = {"web":{"clientid":"someid"}}
+        tmp = open(absoluteTempFilePath, 'w+')
+        tmp.write(json.dumps(fakeData))
+        tmp.close()
+        if not loginBusiness.LoginBusiness().readGoogleSecretsData(absoluteTempFilePath):
+            print('TEST 9 SUCCESS: shouldThrowExceptionWhenTheClientIdIsNotPresent')
+        else:
+            print('TEST 9 FAILED: shouldThrowExceptionWhenTheClientIdIsNotPresent')
+
 tests = loginBusinessTests()
 tests.tokenValidationShouldBeTrue()
 tests.tokenValidationShouldBeFalse()
@@ -80,3 +93,4 @@ tests.shouldThrowExceptionWhenRequestDataIsIncorrect()
 tests.shouldThrowExceptionWhenLongTermTokenIsInvalid()
 tests.shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto()
 tests.shouldThrowExceptionIfClientSecretsFileDoesNotExists()
+tests.shouldThrowExceptionWhenTheClientIdIsNotPresent()
