@@ -2,6 +2,7 @@ import json
 import httplib2
 import pprint
 import operations
+import requests
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 
@@ -9,12 +10,14 @@ class LoginBusiness:
     CLIENT_ID = ''
     CLIENT_SECRET = ''
     LONG_TERM_ACCESS_TOKEN= ''
+    PROVIDER = ''
     USER_EMAIL = ''
     USER_NAME = ''
     USER_ID = ''
     USER_PHOTO = ''
     CREDENTIALS_DATA = ''
     CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION = ''
+
     def validateUserSession(self, tokenSessionAfterGetRequest, tokenSessionAfterPostRequest):
         if tokenSessionAfterGetRequest == tokenSessionAfterPostRequest:
             return True
@@ -53,6 +56,7 @@ class LoginBusiness:
         if header['status'] != '200':
             return False
         data = json.loads(content)
+        self.setProvider = 'facebook'
         self.setUserEmail(data['email'])
         self.setUserName(data['name'])
         self.setUserId(data['id'])
@@ -120,6 +124,17 @@ class LoginBusiness:
             return False
         return True
 
+    def getUserInformationFromGoogleApi(self, accessToken):
+        url = 'https://www.googleapis.com/oauth2/v1/userinfo'
+        params = {'access_token': accessToken, 'alt': 'json'}
+        content = requests.get(url,params=params)
+        content = content.json()
+        self.setProvider = 'google'
+        self.setUserName = content['name']
+        self.setUserEmail = content['email']
+        self.setProfilePhoto = content['picture']
+        return True
+
     def setClientId(self,client_id):
         self.CLIENT_ID = client_id
 
@@ -176,3 +191,9 @@ class LoginBusiness:
     
     def getContentReturnedFromGoogleTokenValidation(self):
         return self.CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION
+
+    def setProvider(self, providerName):
+        self.PROVIDER = providerName
+    
+    def getProvider(self, providerName):
+        return self.PROVIDER
