@@ -85,11 +85,25 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response
 
-        if not loginbusiness.excangeCodeForCredentialObject(request.data,'gplus_client_secret.json'):
-            if not loginbusiness.readGoogleSecretsData('gplus_client_secret.json'):
+            if not loginbusiness.excangeCodeForCredentialObject(request.data,'gplus_client_secret.json'):
                 response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
+            
+            if not loginbusiness.validateGoogleToken(loginbusiness.getCredentialsData().access_token):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response      
+
+            if not loginbusiness.verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess (loginbusiness.getCredentialsData()['sub'], loginbusiness.getContentReturnedFromGoogleTokenValidation()['user_id']):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response                 
+
+            if not loginbusiness.verifyIfTheResponseDataShouldBeDirectedToAnotherApp(loginbusiness.getContentReturnedFromGoogleTokenValidation()['issued_to'], loginbusiness.getCredentialsData()['web']['client_id']):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response 
         return 'Logged with success!'
     if request.method == "GET":
         state = str(uuid.uuid4())
