@@ -14,18 +14,16 @@ class LoginBusiness:
     USER_ID = ''
     USER_PHOTO = ''
     CREDENTIALS_DATA = ''
-
+    CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION = ''
     def validateUserSession(self, tokenSessionAfterGetRequest, tokenSessionAfterPostRequest):
         if tokenSessionAfterGetRequest == tokenSessionAfterPostRequest:
             return True
-        else:
-            return False
+        return False
 
     def checkIfUserWasAlreadyLogged(self,tokenSessionAfterGetRequest):
         if tokenSessionAfterGetRequest is not None:
             return True
-        else:
-            return False
+        return False
 
     def checkIfFacebookClientSecretsExists(self, fbSecretsFileNameWithExtension):
         try:
@@ -98,6 +96,30 @@ class LoginBusiness:
         except FlowExchangeError as error:
             print(error)
             return False
+    
+    def validateGoogleToken(self, accessToken):
+        url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % accessToken
+        http = httplib2.Http()
+        print('request')
+        header, content = http.request(url, 'GET')
+        if header['status'] != '200':
+            return False
+        content = json.loads(content)
+        if content.get('error') is not None:
+            return False
+        self.setContentReturnedFromGoogleTokenValidation(content)
+        return True
+
+    def verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess(self, userIdThatGaranteedAccessOnLogin, userIdFromAcessDataResponse):
+        if userIdThatGaranteedAccessOnLogin != userIdFromAcessDataResponse:
+            return False
+        return True
+    
+    def verifyIfTheResponseDataShouldBeDirectedToAnotherApp(self, appIdFromCredentialsFile, appIdFromAcessDataResponse):
+        if appIdFromCredentialsFile != appIdFromAcessDataResponse:
+            return False
+        return True
+
     def setClientId(self,client_id):
         self.CLIENT_ID = client_id
 
@@ -148,3 +170,9 @@ class LoginBusiness:
     
     def getCredentialsData(self):
         return self.CREDENTIALS_DATA
+    
+    def setContentReturnedFromGoogleTokenValidation(self, contentData):
+        self.CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION = contentData
+    
+    def getContentReturnedFromGoogleTokenValidation(self):
+        return self.CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION
