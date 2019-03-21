@@ -36,7 +36,7 @@ class loginBusinessTests():
             print('TEST 3 FAILED: checkIfUserWasAlreadyLogged')
        
     def shouldThrowExceptionWhenHasNoClientSecretsFile(self):
-        if not loginBusiness.LoginBusiness().checkIfFacebookClientSecretsExists():
+        if not loginBusiness.LoginBusiness().checkIfFacebookClientSecretsExists('fbSecretsFileNameWithExtension.json'):
             print('TEST 4 SUCCESS: shouldThrowExceptionWhenHasNoClientSecretsFile')
         else:
             print('TEST 4 FAILED: shouldThrowExceptionWhenHasNoClientSecretsFile')
@@ -65,6 +65,12 @@ class loginBusinessTests():
         else:
             print('TEST 7 FAILED: shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto')
 
+    def shouldThrowExceptionIfClientSecretsFileDoesNotExists(self):
+        if not loginBusiness.LoginBusiness().readGoogleSecretsData('googleSecretsFileNameWithExtension.json'):
+            print('TEST 8 SUCCESS: shouldThrowExceptionIfClientSecretsFileDoesNotExists')
+        else:
+            print('TEST 8 FAILED: shouldThrowExceptionIfClientSecretsFileDoesNotExists')
+
 tests = loginBusinessTests()
 tests.tokenValidationShouldBeTrue()
 tests.tokenValidationShouldBeFalse()
@@ -73,3 +79,4 @@ tests.shouldThrowExceptionWhenHasNoClientSecretsFile()
 tests.shouldThrowExceptionWhenRequestDataIsIncorrect()
 tests.shouldThrowExceptionWhenLongTermTokenIsInvalid()
 tests.shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto()
+tests.shouldThrowExceptionIfClientSecretsFileDoesNotExists()
