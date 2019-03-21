@@ -84,6 +84,13 @@ class loginBusinessTests():
         else:
             print('TEST 9 FAILED: shouldThrowExceptionWhenTheClientIdIsNotPresent')
 
+    def shouldThrowExceptionWhenTheCodeIsInvalid(self):
+        fakeToken = str(uuid.uuid4)
+        if not loginBusiness.LoginBusiness().excangeCodeForCredentialObject(fakeToken,'gplus_client_secret.json'):
+            print('TEST 10 SUCCESS: shouldThrowExceptionWhenTheCodeIsInvalid')
+        else:
+            print('TEST 10 FAILED: shouldThrowExceptionWhenTheCodeIsInvalid')
+
 tests = loginBusinessTests()
 tests.tokenValidationShouldBeTrue()
 tests.tokenValidationShouldBeFalse()
@@ -94,3 +101,4 @@ tests.shouldThrowExceptionWhenLongTermTokenIsInvalid()
 tests.shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto()
 tests.shouldThrowExceptionIfClientSecretsFileDoesNotExists()
 tests.shouldThrowExceptionWhenTheClientIdIsNotPresent()
+tests.shouldThrowExceptionWhenTheCodeIsInvalid()
