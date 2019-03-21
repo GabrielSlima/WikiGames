@@ -7,10 +7,12 @@
 
     function signInCallback(authResult){
         if(authResult['code']) {
+            console.log(authResult['code']);
             $.ajax({
                 type: 'POST',
                 url: '/login?platform=google&state={{STATE}}',
                 processData: false,
+                contentType: 'application/octet-stream; charset=utf-8',
                 data: authResult['code'],
                 success: function(result){
                     alert('Success, welcome!');
@@ -69,7 +71,7 @@ function sendTokenToServer(response) {
                         <!-- <button class="btn btn-danger">Google+</button> -->
                         <span class="g-signin")
 				data-scope="openid email"
-				data-clientid="302596172903-r5dshhnha4u9m4a7em7qe7bhfqbmri8v.apps.googleusercontent.com"
+				data-clientid="756353528011-d595o4er6q0rv970u0chfrdjhqgel88l.apps.googleusercontent.com"
 				data-redirecturi="postmessage"
 				data-accesstype="offline"
 				data-cookiepolicy="single_host_origin"
