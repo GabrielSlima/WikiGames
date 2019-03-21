@@ -26,9 +26,12 @@ class LoginBusiness:
     def checkIfFacebookClientSecretsExists(self, fbSecretsFileNameWithExtension):
         try:
             facebookSecrets = open(fbSecretsFileNameWithExtension,'r').read()
-            self.setClientId(json.loads(facebookSecrets)['web']['client_id'])
-            self.setClientSecret(json.loads(facebookSecrets)['web']['client_secret'])
-            return True
+            try:
+                self.setClientId(json.loads(facebookSecrets)['web']['client_id'])
+                self.setClientSecret(json.loads(facebookSecrets)['web']['client_secret'])
+                return True
+            except KeyError:
+                return False
         except FileNotFoundError:
             return False
 
@@ -68,17 +71,19 @@ class LoginBusiness:
         if id is None:
             id = operations.createUser(login_session['username'],login_session['email'],login_session['picture'])
         self.setLocalUserId(id)
-        print(id)
         return id
 
     def readGoogleSecretsData(self,googleSecretsFileNameWithExtension):
         try:
             googleSecrets = open(googleSecretsFileNameWithExtension, 'r').read()
-            self.setClientId(json.loads(googleSecrets)['web']['client_id'])
-            return True
+            try:
+                self.setClientId(json.loads(googleSecrets)['web']['client_id'])
+                return True
+            except KeyError:
+                return False
         except FileNotFoundError:
             return False
-            
+
     def setClientId(self,client_id):
         self.CLIENT_ID = client_id
 
