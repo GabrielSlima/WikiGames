@@ -56,7 +56,7 @@ class LoginBusiness:
         if header['status'] != '200':
             return False
         data = json.loads(content)
-        self.setProvider = 'facebook'
+        self.setProvider('facebook')
         self.setUserEmail(data['email'])
         self.setUserName(data['name'])
         self.setUserId(data['id'])
@@ -129,10 +129,14 @@ class LoginBusiness:
         params = {'access_token': accessToken, 'alt': 'json'}
         content = requests.get(url,params=params)
         content = content.json()
-        self.setProvider = 'google'
-        self.setUserName = content['name']
-        self.setUserEmail = content['email']
-        self.setProfilePhoto = content['picture']
+        print(content)
+        print(content['name'])
+        print(content['email'])
+        print(content['picture'])
+        self.setProvider('google')
+        self.setUserName(content['name'])
+        self.setUserEmail(content['email'])
+        self.setProfilePhoto(content['picture'])
         return True
 
     def setClientId(self,client_id):
@@ -195,5 +199,5 @@ class LoginBusiness:
     def setProvider(self, providerName):
         self.PROVIDER = providerName
     
-    def getProvider(self, providerName):
+    def getProvider(self):
         return self.PROVIDER
