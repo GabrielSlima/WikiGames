@@ -2,8 +2,26 @@
 {% include "headerpublic.html"%}
 {% block content%}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  		<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+<script src="//apis.google.com/js/platform.js?onload=start"> </script>
 <script>
+
+    function signInCallback(authResult){
+        if(authResult['code']) {
+            $.ajax({
+                type: 'POST',
+                url: '/login?platform=google&state={{STATE}}',
+                processData: false,
+                data: authResult['code'],
+                success: function(result){
+                    alert('Success, welcome!');
+                    setTimeout(function(){
+                        window.location.href="/";}, 1000);
+                }
+            });
+        }
+        
+    }
+
     window.fbAsyncInit = function() {
     FB.init({
     appId            : '1940200469439661',
@@ -48,7 +66,15 @@ function sendTokenToServer(response) {
                         <h5 class="card-title">You are log in right now, welcome!</h5>
                         <div id="fb-root"></div>
                         <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();"></fb:login-button>
-                        <button class="btn btn-danger">Google+</button>
+                        <!-- <button class="btn btn-danger">Google+</button> -->
+                        <span class="g-signin")
+				data-scope="openid email"
+				data-clientid="302596172903-r5dshhnha4u9m4a7em7qe7bhfqbmri8v.apps.googleusercontent.com"
+				data-redirecturi="postmessage"
+				data-accesstype="offline"
+				data-cookiepolicy="single_host_origin"
+				data-callback="signInCallback"
+				data-approvalprompt="force"><img src="https://cdn2.iconfinder.com/data/icons/social-networking-package-1-1/512/networks_-_social_-_web-05-2-512.png" style="width:30px;height:30px;" alt=""></span>
                     </div>
                 </div>
             </div>
