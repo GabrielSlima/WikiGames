@@ -48,14 +48,19 @@ def login():
             response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
             response.headers['Content-Type'] = 'application/json'
             return response
+
         if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('access_token')):
             response = make_response(json.dumps('The user was already logged...'),200)
             response.headers['Content-Type'] = 'application/json'
             return response
+
         if request.args.get('platform') == 'facebook':
             facebookAccessToken = request.data.decode('utf-8')
-            loginbusiness.checkIfFacebookClientSecretsExists()
-            if not loginbusiness.getLongTermAccessToken(loginbusiness.getFacebookClientId(), loginbusiness.getFacebookClientSecret(),facebookAccessToken):
+            if not loginbusiness.checkIfFacebookClientSecretsExists('fb_secrets.json'):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+            if not loginbusiness.getLongTermAccessToken(loginbusiness.getClientId(), loginbusiness.getClientSecret(),facebookAccessToken):
                 response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
@@ -73,6 +78,18 @@ def login():
                 return response
             login_session['picture'] = loginbusiness.getProfilePhoto()
             login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
+            
+        if request.args.get('platform') == 'google':
+            if not loginbusiness.readGoogleSecretsData('gplus_client_secret.json'):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+
+        if not loginbusiness.excangeCodeForCredentialObject(request.data,'gplus_client_secret.json'):
+            if not loginbusiness.readGoogleSecretsData('gplus_client_secret.json'):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+                response.headers['Content-Type'] = 'application/json'
+                return response
         return 'Logged with success!'
     if request.method == "GET":
         state = str(uuid.uuid4())
