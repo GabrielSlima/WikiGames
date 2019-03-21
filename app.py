@@ -68,7 +68,7 @@ def login():
             login_session['access_token'] = facebookLongTermAccessToken
             loginbusiness.getFacebookUserInfos(login_session['access_token'])
             
-            login_session
+            login_session['provider'] = loginbusiness.getProvider()
             login_session['user_id_facebook'] = loginbusiness.getUserId()
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
@@ -118,8 +118,20 @@ def login():
                 response = make_response(json.dumps('Occured an error, please, try log in again!'),200)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-            
 
+            login_session['provider'] = loginbusiness.getProvider()
+            login_session['user_id_facebook'] = loginbusiness.getUserId()
+            login_session['username'] = loginbusiness.getUserName()
+            login_session['email'] = loginbusiness.getUserEmail()
+            login_session['picture'] = loginbusiness.getProfilePhoto()
+            login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
+            print(login_session['provider'])
+            print(login_session['user_id_facebook'])
+            print(login_session['username'])
+            print(login_session['email'])
+            print(login_session['picture'])
+            print(login_session['local_user_id'])
+            
         return 'Logged with success!'
     if request.method == "GET":
         state = str(uuid.uuid4())
