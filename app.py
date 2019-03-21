@@ -68,6 +68,7 @@ def login():
             login_session['access_token'] = facebookLongTermAccessToken
             loginbusiness.getFacebookUserInfos(login_session['access_token'])
             
+            login_session
             login_session['user_id_facebook'] = loginbusiness.getUserId()
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
@@ -95,15 +96,30 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response      
 
-            if not loginbusiness.verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess (loginbusiness.getCredentialsData()['sub'], loginbusiness.getContentReturnedFromGoogleTokenValidation()['user_id']):
+            if not loginbusiness.verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess (loginbusiness.getCredentialsData().id_token['sub'], loginbusiness.getContentReturnedFromGoogleTokenValidation()['user_id']):
                 response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response                 
 
-            if not loginbusiness.verifyIfTheResponseDataShouldBeDirectedToAnotherApp(loginbusiness.getContentReturnedFromGoogleTokenValidation()['issued_to'], loginbusiness.getCredentialsData()['web']['client_id']):
+            if not loginbusiness.verifyIfTheResponseDataShouldBeDirectedToAnotherApp(loginbusiness.getContentReturnedFromGoogleTokenValidation()['issued_to'], loginbusiness.getClientId()):
                 response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
-                return response 
+                return response
+            
+            if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('gplus_id')):
+                response = make_response(json.dumps('The user was already logged...'),200)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+            
+            login_session['access_token'] = loginbusiness.getCredentialsData().access_token
+            login_session['gplus_id'] = loginbusiness.getCredentialsData().id_token['sub']
+
+            if not loginbusiness.getUserInformationFromGoogleApi(loginbusiness.getCredentialsData().access_token):
+                response = make_response(json.dumps('Occured an error, please, try log in again!'),200)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+            
+
         return 'Logged with success!'
     if request.method == "GET":
         state = str(uuid.uuid4())
