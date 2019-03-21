@@ -2,6 +2,8 @@ import json
 import httplib2
 import pprint
 import operations
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.client import FlowExchangeError
 
 class LoginBusiness:
     CLIENT_ID = ''
@@ -11,6 +13,8 @@ class LoginBusiness:
     USER_NAME = ''
     USER_ID = ''
     USER_PHOTO = ''
+    CREDENTIALS_DATA = ''
+
     def validateUserSession(self, tokenSessionAfterGetRequest, tokenSessionAfterPostRequest):
         if tokenSessionAfterGetRequest == tokenSessionAfterPostRequest:
             return True
@@ -84,6 +88,16 @@ class LoginBusiness:
         except FileNotFoundError:
             return False
 
+    def excangeCodeForCredentialObject(self, code, clientSecretsFileWithExtension):
+        try:
+            oauth_flow = flow_from_clientsecrets(clientSecretsFileWithExtension, scope='')
+            oauth_flow.redirect_uri = 'postmessage'
+            credentials = oauth_flow.step2_exchange(code)
+            self.setCredentialsData(credentials)
+            return True
+        except FlowExchangeError as error:
+            print(error)
+            return False
     def setClientId(self,client_id):
         self.CLIENT_ID = client_id
 
@@ -128,3 +142,9 @@ class LoginBusiness:
 
     def setLocalUserId(self, localUserId):
         self.LOCAL_USER_ID = localUserId
+
+    def setCredentialsData(self, credentialsData):
+        self.CREDENTIALS_DATA = credentialsData
+    
+    def getCredentialsData(self):
+        return self.CREDENTIALS_DATA
