@@ -91,6 +91,13 @@ class loginBusinessTests():
         else:
             print('TEST 10 FAILED: shouldThrowExceptionWhenTheCodeIsInvalid')
 
+    def shouldThrowExceptionWhenGoogleAccessTokenIsInvalid(self):
+        fakeAccessToken = str(uuid.uuid4)
+        if not loginBusiness.LoginBusiness().validateGoogleToken(fakeAccessToken):
+            print('TEST 11 SUCCESS: shouldThrowExceptionWhenGoogleAccessTokenIsInvalid')
+        else:
+            print('TEST 11 FAILED: shouldThrowExceptionWhenGoogleAccessTokenIsInvalid')
+
 tests = loginBusinessTests()
 tests.tokenValidationShouldBeTrue()
 tests.tokenValidationShouldBeFalse()
@@ -102,3 +109,4 @@ tests.shouldThrowExceptionsWhenLongTermTokenIsInvalidForRetrievePhoto()
 tests.shouldThrowExceptionIfClientSecretsFileDoesNotExists()
 tests.shouldThrowExceptionWhenTheClientIdIsNotPresent()
 tests.shouldThrowExceptionWhenTheCodeIsInvalid()
+tests.shouldThrowExceptionWhenGoogleAccessTokenIsInvalid()
