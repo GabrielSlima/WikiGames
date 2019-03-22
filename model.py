@@ -19,6 +19,14 @@ class Category(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+    @property
+    def serialize(self):
+        return {
+            'Id': self.id,
+            'Title': self.title,
+            'Description': self.description
+        }
+
 class Game (Base):
     __tablename__ = 'game'
     id = Column(Integer, primary_key=True)
@@ -29,5 +37,12 @@ class Game (Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     category = relationship(Category)
     user = relationship(User)
-
+    
+    @property
+    def serialize(self):
+        return {
+            'Title': self.title,
+            'Short description': self.short_description,
+            'Long description': self.long_description,
+        }
 Base.metadata.create_all(engine)

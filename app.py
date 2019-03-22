@@ -6,12 +6,14 @@ from flask import flash
 from flask import url_for
 from flask import make_response
 from flask import session as login_session
+from flask import jsonify
 
 import json
 import uuid
 
 import operations
 import loginBusiness
+import LogoutBusiness
 app = Flask(__name__)
 gamemock = {'id': 1,'name': 'Doom', 'description': 'Doom is a first-person shooter video game developed by id Software and published by Bethesda Softworks. A reboot of the Doom franchise, it is the fourth title in the main series and the first major installment since Doom 3 in 2004.'}
 allCategoriesMock = [
@@ -120,29 +122,39 @@ def login():
                 return response
 
             login_session['provider'] = loginbusiness.getProvider()
-            login_session['user_id_facebook'] = loginbusiness.getUserId()
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
             login_session['picture'] = loginbusiness.getProfilePhoto()
             login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
-            print(login_session['provider'])
-            print(login_session['user_id_facebook'])
-            print(login_session['username'])
-            print(login_session['email'])
-            print(login_session['picture'])
-            print(login_session['local_user_id'])
-            
+            flash('Welcome!!!')
         return 'Logged with success!'
     if request.method == "GET":
         state = str(uuid.uuid4())
         login_session['user_token'] = state
         return render_template('login.html', STATE=state)
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout')
 def logout():
-    if request.method == 'POST':
-        return 'Você acabou de deslogar do nosso app'
-    return render_template('logout.html')
+    if login_session.get('access_token') is None:
+        response = make_response(json.dumps('You are not logged to log out!'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response 
+    logoutBusiness = LogoutBusiness.logoutBusiness()
+    if login_session['provider'] == 'google':
+        if not logoutBusiness.disconnectFromGoogle(login_session):
+            response = make_response(json.dumps('Occurred an error when trying to logout, please, try to clear you browser cache.'), 401)
+            response.headers['Content-Type'] = 'application/json'
+            return response     
+    
+    if login_session['provider'] == 'facebook':
+        logoutBusiness.disconnectFromFacebook(login_session)
+    flash('You are now not logged in!')
+    return redirect('/')
+
+@app.route('/categories/api')
+def cateogiesApi():
+    allCategories = operations.listCategories()
+    return jsonify(Categories=[i.serialize for i in allCategories])
 
 @app.route('/')
 @app.route('/categories')
@@ -163,8 +175,9 @@ def addCategory():
         if categoryDescription == "":
             categoryDescription = '-'
         if categoryTitle != "":
-            operations.createCategory(categoryTitle, categoryDescription, '1')
-            # flash('%s was added to your repository!' % categoryTitle)
+            operations.createCategory(categoryTitle, categoryDescription, login_session.get('local_user_id'))
+        
+        flash('%s was added to your repository!' % categoryTitle)
         return redirect('/')
     return render_template('addCategory.html')
 
@@ -185,6 +198,8 @@ def showCatalogItems(categoryId):
 def showCatalogItem(genreName, itemId):
     try:
         foundedGame = operations.getGame(itemId)
+        print(foundedGame.user_id)
+        print(login_session.get('local_user_id'))
         if 'username' not in login_session:
             return render_template('publicShowItem.html', game = foundedGame, isAuthor=False)
 
@@ -215,7 +230,8 @@ def addCatalogItem(catalog_id):
         if gameLongDescription == "":
             gameLongDescription = "-"
         if gameTitle != "":
-            operations.createGame(gameTitle,gameShortDescription,gameLongDescription,catalog_id, '1')
+            operations.createGame(gameTitle,gameShortDescription,gameLongDescription,catalog_id, login_session.get('local_user_id'))
+            flash('New item added!')
             return redirect(url_for('showCatalogItems', categoryId = catalog_id))
     return render_template('addCatalogItem.html', category=catalog)
 
@@ -240,7 +256,7 @@ def editCatalogItem(itemId):
         if gameLongDescription is None:
             gameLongDescription = '-'
         if gameTitle is not None:
-            newGame = operations.editGame(itemId, gameTitle, gameShortDescription, gameLongDescription, gameCategory, '1')
+            newGame = operations.editGame(itemId, gameTitle, gameShortDescription, gameLongDescription, gameCategory, login_session.get('local_user_id'))
             print(newGame.category_id)
             return redirect(url_for('showCatalogItems', categoryId = newGame.category_id))
     if request.method == 'GET':
