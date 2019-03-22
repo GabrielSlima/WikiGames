@@ -15,7 +15,7 @@
                 contentType: 'application/octet-stream; charset=utf-8',
                 data: authResult['code'],
                 success: function(result){
-                    alert('Success, welcome!');
+                    $('#callbackResponse').html('<span >Welcome You are authenticated now, take your time!</span>');
                     setTimeout(function(){
                         window.location.href="/";}, 1000);
                 }
@@ -44,7 +44,7 @@ function sendTokenToServer(response) {
             contentType: 'application/actect-stream; charset=utf-8',
             success: function(result){
                 if(result){
-                    $('#callbackResponse').html('<span>Welcome'  + 'You are authenticated now, take your time!</span>');
+                    $('#callbackResponse').html('<span >Welcome You are authenticated now, take your time!</span>');
                     setTimeout(function(){ window.location.href="/"}, 5000);
                 }
                 else {
@@ -58,7 +58,11 @@ function sendTokenToServer(response) {
 <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 <br>
 <main class="container">
-    <div id="callbackResponse"></div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" id="callbackResponse"></div>
+        <div class="col-sm-2"></div>
+    </div>
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
@@ -68,7 +72,6 @@ function sendTokenToServer(response) {
                         <h5 class="card-title">You are log in right now, welcome!</h5>
                         <div id="fb-root"></div>
                         <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();"></fb:login-button>
-                        <!-- <button class="btn btn-danger">Google+</button> -->
                         <span class="g-signin")
 				data-scope="openid email"
 				data-clientid="756353528011-d595o4er6q0rv970u0chfrdjhqgel88l.apps.googleusercontent.com"
