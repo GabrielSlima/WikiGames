@@ -23,27 +23,32 @@ def login():
         return redirect('/')
     if request.method == "POST":
         loginbusiness = loginBusiness.LoginBusiness()
+        print('LOGINFO: VALIDATING TOKEN SESSION...')
         if not loginbusiness.validateUserSession(
                 login_session['user_token'], request.args.get('state')):
             response = make_response(json.dumps(
                 'Occured an error, please, try log in again!'), 500)
             response.headers['Content-Type'] = 'application/json'
             return response
+        print('LOGINFO: CHECKING IF THE USER WAS ALREADY LOGGED...')
         if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(
                 login_session.get('access_token')):
             response = make_response(json.dumps(
                 'The user was already logged...'), 200)
             response.headers['Content-Type'] = 'application/json'
             return response
-
+        print('LOGINFO: CHECKING THE PLATFORM...')
         if request.args.get('platform') == 'facebook':
+            print('LOGINFO: DONE! PLATFORM=%s' %request.args.get('platform'))
             facebookAccessToken = request.data.decode('utf-8')
+            print('LOGINFO: CHECKING CLIENT SECRETS...')
             if not loginbusiness.checkIfFacebookClientSecretsExists(
                     'fb_secrets.json'):
                 response = make_response(json.dumps(
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
+            print('LOGINFO: GETTING LONGTERM ACCESSTOKEN...')
             if not loginbusiness.getLongTermAccessToken(
                     loginbusiness.getClientId(),
                     loginbusiness.getClientSecret(),
@@ -52,15 +57,19 @@ def login():
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
+            print('LOGINFO: BUILDING A SESSION FOR THE USER...')
             facebookLongTermAccessToken = \
                 loginbusiness.getLongTermAccessTokenFromFacebook()
+            print('LOGINFO: DONE...')
             login_session['access_token'] = facebookLongTermAccessToken
+            print('LOGINFO: GETTING USERINFOS...')
             loginbusiness.getFacebookUserInfos(login_session['access_token'])
+            print('LOGINFO: DONE...')
             login_session['provider'] = loginbusiness.getProvider()
             login_session['user_id_facebook'] = loginbusiness.getUserId()
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
-
+            print('LOGINFO: GETTING USER PHOTO...')
             if not loginbusiness.getUserProfilePhoto(
                     login_session['access_token']):
                 response = make_response(json.dumps(
@@ -70,15 +79,16 @@ def login():
             login_session['picture'] = loginbusiness.getProfilePhoto()
             login_session['local_user_id'] = \
                 loginbusiness.getLocalUserId(login_session)
-
+            print('LOGINFO: DONE...')
         if request.args.get('platform') == 'google':
+            print('LOGINFO: DONE! PLATFORM=%s' % request.args.get('platform'))
             if not loginbusiness.readGoogleSecretsData(
                     'gplus_client_secret.json'):
                 response = make_response(json.dumps(
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-
+            print('LOGINFO: BUILDING A CREDENTIAL OBJECT...')
             if not loginbusiness.excangeCodeForCredentialObject(
                     request.data,
                     'gplus_client_secret.json'):
@@ -86,14 +96,14 @@ def login():
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-
+            print('LOGINFO: VALIDATING TOKEN...')
             if not loginbusiness.validateGoogleToken(
                     loginbusiness.getCredentialsData().access_token):
                 response = make_response(json.dumps(
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-
+            print('LOGINFO: VALIDATING USER...')
             if not loginbusiness.isTheDataIsFromTheSameUserThatGaranteedAccess(
                         loginbusiness.getCredentialsData().id_token['sub'],
                         loginbusiness.getDataFromTokenValidation()['user_id']):
@@ -101,7 +111,7 @@ def login():
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-
+            print('LOGINFO: VALIDATING APP...')
             if not loginbusiness.theResponseDataShouldBeDirectedToAnotherApp(
                     loginbusiness.getDataFromTokenValidation()['issued_to'],
                     loginbusiness.getClientId()):
@@ -109,7 +119,7 @@ def login():
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-
+            print('LOGINFO: CHECKING IF USER WAS ALREADY LOGGED...')
             if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(
                     login_session.get('gplus_id')):
                 response = make_response(json.dumps(
@@ -121,20 +131,21 @@ def login():
                 loginbusiness.getCredentialsData().access_token
             login_session['gplus_id'] = \
                 loginbusiness.getCredentialsData().id_token['sub']
-
+            print('LOGINFO: GETTING USER INFOS...')
             if not loginbusiness.getUserInformationFromGoogleApi(
                     loginbusiness.getCredentialsData().access_token):
                 response = make_response(json.dumps(
                     'Occured an error, please, try log in again!'), 200)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-
+            print('LOGINFO: BUILDING USER SESSION...')
             login_session['provider'] = loginbusiness.getProvider()
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
             login_session['picture'] = loginbusiness.getProfilePhoto()
             login_session['local_user_id'] = loginbusiness.getLocalUserId(
                 login_session)
+            print('LOGINFO: DONE!')
             flash('Welcome!!!')
         return 'Logged with success!'
     if request.method == "GET":

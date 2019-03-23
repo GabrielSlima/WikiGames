@@ -67,7 +67,7 @@ class LoginBusiness:
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
             return False
-        data = json.loads(content)
+        data = json.loads(content.decode('utf-8'))
         self.setProvider('facebook')
         self.setUserEmail(data['email'])
         self.setUserName(data['name'])
@@ -81,7 +81,7 @@ class LoginBusiness:
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
             return False
-        data = json.loads(content)
+        data = json.loads(content.decode('utf-8'))
         self.setProfilePhoto(data['data']['url'])
         return True
 
@@ -129,7 +129,7 @@ class LoginBusiness:
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
             return False
-        content = json.loads(content)
+        content = json.loads(content.decode('utf-8'))
         if content.get('error') is not None:
             return False
         self.setContentReturnedFromGoogleTokenValidation(content)
