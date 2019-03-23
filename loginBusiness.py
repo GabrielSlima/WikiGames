@@ -104,7 +104,6 @@ class LoginBusiness:
     def validateGoogleToken(self, accessToken):
         url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % accessToken
         http = httplib2.Http()
-        print('request')
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
             return False
@@ -114,12 +113,12 @@ class LoginBusiness:
         self.setContentReturnedFromGoogleTokenValidation(content)
         return True
 
-    def verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess(self, userIdThatGaranteedAccessOnLogin, userIdFromAcessDataResponse):
+    def isTheDataIsFromTheSameUserThatGaranteedAccess(self, userIdThatGaranteedAccessOnLogin, userIdFromAcessDataResponse):
         if userIdThatGaranteedAccessOnLogin != userIdFromAcessDataResponse:
             return False
         return True
     
-    def verifyIfTheResponseDataShouldBeDirectedToAnotherApp(self, appIdFromCredentialsFile, appIdFromAcessDataResponse):
+    def theResponseDataShouldBeDirectedToAnotherApp(self, appIdFromCredentialsFile, appIdFromAcessDataResponse):
         if appIdFromCredentialsFile != appIdFromAcessDataResponse:
             return False
         return True
@@ -129,10 +128,6 @@ class LoginBusiness:
         params = {'access_token': accessToken, 'alt': 'json'}
         content = requests.get(url,params=params)
         content = content.json()
-        print(content)
-        print(content['name'])
-        print(content['email'])
-        print(content['picture'])
         self.setProvider('google')
         self.setUserName(content['name'])
         self.setUserEmail(content['email'])
@@ -193,7 +188,7 @@ class LoginBusiness:
     def setContentReturnedFromGoogleTokenValidation(self, contentData):
         self.CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION = contentData
     
-    def getContentReturnedFromGoogleTokenValidation(self):
+    def getDataFromTokenValidation(self):
         return self.CONTENT_RETURNED_FROM_CREDENTIALS_TOKEN_VALIDATION
 
     def setProvider(self, providerName):

@@ -50,7 +50,8 @@ def login():
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-            facebookLongTermAccessToken = loginbusiness.getLongTermAccessTokenFromFacebook()
+            facebookLongTermAccessToken = \
+                loginbusiness.getLongTermAccessTokenFromFacebook()
             login_session['access_token'] = facebookLongTermAccessToken
             loginbusiness.getFacebookUserInfos(login_session['access_token'])
             login_session['provider'] = loginbusiness.getProvider()
@@ -65,7 +66,8 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response
             login_session['picture'] = loginbusiness.getProfilePhoto()
-            login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
+            login_session['local_user_id'] = \
+                loginbusiness.getLocalUserId(login_session)
 
         if request.args.get('platform') == 'google':
             if not loginbusiness.readGoogleSecretsData(
@@ -90,16 +92,17 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response
 
-            if not loginbusiness.verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess(
+            if not loginbusiness.isTheDataIsFromTheSameUserThatGaranteedAccess(
                         loginbusiness.getCredentialsData().id_token['sub'],
-                        loginbusiness.getContentReturnedFromGoogleTokenValidation()['user_id']):
+                        loginbusiness.getDataFromTokenValidation()['user_id']):
                 response = make_response(json.dumps(
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
 
-            if not loginbusiness.verifyIfTheResponseDataShouldBeDirectedToAnotherApp(
-                    loginbusiness.getContentReturnedFromGoogleTokenValidation()['issued_to'], loginbusiness.getClientId()):
+            if not loginbusiness.theResponseDataShouldBeDirectedToAnotherApp(
+                    loginbusiness.getDataFromTokenValidation()['issued_to'],
+                    loginbusiness.getClientId()):
                 response = make_response(json.dumps(
                     'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
@@ -112,8 +115,10 @@ def login():
                 response.headers['Content-Type'] = 'application/json'
                 return response
 
-            login_session['access_token'] = loginbusiness.getCredentialsData().access_token
-            login_session['gplus_id'] = loginbusiness.getCredentialsData().id_token['sub']
+            login_session['access_token'] = \
+                loginbusiness.getCredentialsData().access_token
+            login_session['gplus_id'] = \
+                loginbusiness.getCredentialsData().id_token['sub']
 
             if not loginbusiness.getUserInformationFromGoogleApi(
                     loginbusiness.getCredentialsData().access_token):
@@ -230,8 +235,6 @@ def showCatalogItems(categoryId):
 def showCatalogItem(genreName, itemId):
     try:
         foundedGame = operations.getGame(itemId)
-        print(foundedGame.user_id)
-        print(login_session.get('local_user_id'))
         if 'username' not in login_session:
             return render_template(
                 'publicShowItem.html',
@@ -316,7 +319,6 @@ def editCatalogItem(itemId):
                 gameCategory,
                 login_session.get('local_user_id')
                 )
-            print(newGame.category_id)
             return redirect(url_for(
                 'showCatalogItems',
                 categoryId=newGame.category_id)
