@@ -7,6 +7,9 @@ import json
 
 
 class loginBusinessTests():
+    """
+       UNIT TESTS FOR OUR LOGIC AT loginBusiness CLASSS.
+    """
     requests = ['GET', 'POST']
     tokenSessionAfterGetRequest = ''
 

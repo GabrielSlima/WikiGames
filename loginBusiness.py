@@ -8,6 +8,11 @@ from oauth2client.client import FlowExchangeError
 
 
 class LoginBusiness:
+    """
+        THIS CLASS IMPLEMENTS THE BUSINESS OF THE METHOD login FROM app.py.
+        EVERYTHING RELATED TO IT IS PLACED HERE, INCLUDING VALIDATIONS AND DATA RETRIEVING FROM
+        FACEBOOK AND GOOGLE APIs.
+    """
     CLIENT_ID = ''
     CLIENT_SECRET = ''
     LONG_TERM_ACCESS_TOKEN = ''

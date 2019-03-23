@@ -2,6 +2,10 @@ import httplib2
 
 
 class logoutBusiness:
+    """
+        BUSINESS LOGIC FOR THE METHOD logout AT app.py.
+        THE FUNCTIONS TO DISCONNECT FROM GOOGLE AND FACEBOOK ARE HERE.
+    """
     def disconnectFromGoogle(self, login_session):
         url = (
             'https://accounts.google.com/o/oauth2/'
