@@ -49,9 +49,9 @@ class LoginBusiness:
             return False
 
     def getLongTermAccessToken(self, app_id, app_secret, access_token):
-        url = 'https://graph.facebook.com/oauth/access_token?grant_type='
+        url = ('https://graph.facebook.com/oauth/access_token?grant_type='
         'fb_exchange_token&client_id=%s&client_secret=%s&'
-        'fb_exchange_token=%s' % (app_id, app_secret, access_token)
+        'fb_exchange_token=%s' % (app_id, app_secret, access_token))
         http = httplib2.Http()
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
@@ -61,8 +61,8 @@ class LoginBusiness:
         return True
 
     def getFacebookUserInfos(self, token):
-        url = 'https://graph.facebook.com/v2.8/me?access_'
-        'token=%s&fields=name,id,email' % token
+        url = ('https://graph.facebook.com/v2.8/me?access_'
+        'token=%s&fields=name,id,email' % token)
         http = httplib2.Http()
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
@@ -75,8 +75,8 @@ class LoginBusiness:
         return True
 
     def getUserProfilePhoto(self, token):
-        url = 'https://graph.facebook.com/v2.8/me/picture?'
-        'access_token=%s&redirect=0&height=200&width=200' % token
+        url = ('https://graph.facebook.com/v2.8/me/picture?'
+        'access_token=%s&redirect=0&height=200&width=200' % token)
         http = httplib2.Http()
         header, content = http.request(url, 'GET')
         if header['status'] != '200':
@@ -123,8 +123,8 @@ class LoginBusiness:
             return False
 
     def validateGoogleToken(self, accessToken):
-        url = 'https://www.googleapis.com/oauth2/v1/'
-        'tokeninfo?access_token=%s' % accessToken
+        url = ('https://www.googleapis.com/oauth2/v1/'
+        'tokeninfo?access_token=%s' % accessToken)
         http = httplib2.Http()
         header, content = http.request(url, 'GET')
         if header['status'] != '200':

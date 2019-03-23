@@ -19,6 +19,8 @@ app = Flask(__name__)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'username' in login_session:
+        return redirect('/')
     if request.method == "POST":
         loginbusiness = loginBusiness.LoginBusiness()
         if not loginbusiness.validateUserSession(
