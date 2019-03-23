@@ -15,109 +15,110 @@ import operations
 import loginBusiness
 import LogoutBusiness
 app = Flask(__name__)
-gamemock = {'id': 1,'name': 'Doom', 'description': 'Doom is a first-person shooter video game developed by id Software and published by Bethesda Softworks. A reboot of the Doom franchise, it is the fourth title in the main series and the first major installment since Doom 3 in 2004.'}
-allCategoriesMock = [
-    {'id': 1 ,'title': "80's fps", 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, lorem nec mollis ullamcorper, magna nulla lobortis eros, quis feugiat orci ipsum ac lorem. Sed aliquam nisi at dolor volutpat pharetra. Nam tincidunt sagittis risus. Suspendisse egestas gravida faucibus. Mauris viverra tortor ut semper pretium. In tincidunt tellus sed tincidunt hendrerit. Phasellus sem velit, auctor sed erat in, egestas consectetur nisi. Nunc at porttitor nulla. Integer nec lorem luctus, vestibulum diam eget, mollis elit. In at odio non nisl rhoncus scelerisque. Vivamus at hendrerit mauris, non feugiat metus. Nunc velit leo, consectetur in lorem sit amet, sollicitudin ullamcorper orci. Nam eget fermentum libero. Phasellus viverra nisi lobortis felis sodales, sed faucibus arcu molestie.'},
-    {'id': 2 ,'title': "80's adventure", 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, lorem nec mollis ullamcorper, magna nulla lobortis eros, quis feugiat orci ipsum ac lorem. Sed aliquam nisi at dolor volutpat pharetra. Nam tincidunt sagittis risus. Suspendisse egestas gravida faucibus. Mauris viverra tortor ut semper pretium. In tincidunt tellus sed tincidunt hendrerit. Phasellus sem velit, auctor sed erat in, egestas consectetur nisi. Nunc at porttitor nulla. Integer nec lorem luctus, vestibulum diam eget, mollis elit. In at odio non nisl rhoncus scelerisque. Vivamus at hendrerit mauris, non feugiat metus. Nunc velit leo, consectetur in lorem sit amet, sollicitudin ullamcorper orci. Nam eget fermentum libero. Phasellus viverra nisi lobortis felis sodales, sed faucibus arcu molestie.'},
-    {'id': 2 ,'title': "80's music", 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, lorem nec mollis ullamcorper, magna nulla lobortis eros, quis feugiat orci ipsum ac lorem. Sed aliquam nisi at dolor volutpat pharetra. Nam tincidunt sagittis risus. Suspendisse egestas gravida faucibus. Mauris viverra tortor ut semper pretium. In tincidunt tellus sed tincidunt hendrerit. Phasellus sem velit, auctor sed erat in, egestas consectetur nisi. Nunc at porttitor nulla. Integer nec lorem luctus, vestibulum diam eget, mollis elit. In at odio non nisl rhoncus scelerisque. Vivamus at hendrerit mauris, non feugiat metus. Nunc velit leo, consectetur in lorem sit amet, sollicitudin ullamcorper orci. Nam eget fermentum libero. Phasellus viverra nisi lobortis felis sodales, sed faucibus arcu molestie.'}
-]
 
-gamesListMock = [
-    {
-        'id':1, 
-'title': 'Dom',
-'category':'80s fps', 
-'description': 'Doom is a first-person shooter video game developed by id Software and published by Bethesda Softworks. A reboot of the Doom franchise, it is the fourth title in the main series and the first major installment since Doom 3 in 2004.'
-},
-{
-    'id':2,
-    'title': 'Counter Strike',
-    'category':'80s fps',
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, lorem nec mollis ullamcorper, magna nulla lobortis eros, quis feugiat orci ipsum ac lorem. Sed aliquam nisi at dolor volutpat pharetra. Nam tincidunt sagittis risus. Suspendisse egestas gravida faucibus. Mauris viverra tortor ut semper pretium. In tincidunt tellus sed tincidunt hendrerit. Phasellus sem velit, auctor sed erat in, egestas consectetur nisi. Nunc at porttitor nulla. Integer nec lorem luctus, vestibulum diam eget, mollis elit. In at odio non nisl rhoncus scelerisque. Vivamus at hendrerit mauris, non feugiat metus. Nunc velit leo, consectetur in lorem sit amet, sollicitudin ullamcorper orci. Nam eget fermentum libero. Phasellus viverra nisi lobortis felis sodales, sed faucibus arcu molestie.'
-    },
-{
-    'id':3,
-    'title': '007',
-    'category':'80s fps',
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, lorem nec mollis ullamcorper, magna nulla lobortis eros, quis feugiat orci ipsum ac lorem. Sed aliquam nisi at dolor volutpat pharetra. Nam tincidunt sagittis risus. Suspendisse egestas gravida faucibus. Mauris viverra tortor ut semper pretium. In tincidunt tellus sed tincidunt hendrerit. Phasellus sem velit, auctor sed erat in, egestas consectetur nisi. Nunc at porttitor nulla. Integer nec lorem luctus, vestibulum diam eget, mollis elit. In at odio non nisl rhoncus scelerisque. Vivamus at hendrerit mauris, non feugiat metus. Nunc velit leo, consectetur in lorem sit amet, sollicitudin ullamcorper orci. Nam eget fermentum libero. Phasellus viverra nisi lobortis felis sodales, sed faucibus arcu molestie.'
-    }]
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         loginbusiness = loginBusiness.LoginBusiness()
-        if not loginbusiness.validateUserSession(login_session['user_token'], request.args.get('state')):
-            response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+        if not loginbusiness.validateUserSession(
+                login_session['user_token'], request.args.get('state')):
+            response = make_response(json.dumps(
+                'Occured an error, please, try log in again!'), 500)
             response.headers['Content-Type'] = 'application/json'
             return response
-
-        if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('access_token')):
-            response = make_response(json.dumps('The user was already logged...'),200)
+        if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(
+                login_session.get('access_token')):
+            response = make_response(json.dumps(
+                'The user was already logged...'), 200)
             response.headers['Content-Type'] = 'application/json'
             return response
 
         if request.args.get('platform') == 'facebook':
             facebookAccessToken = request.data.decode('utf-8')
-            if not loginbusiness.checkIfFacebookClientSecretsExists('fb_secrets.json'):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.checkIfFacebookClientSecretsExists(
+                    'fb_secrets.json'):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-            if not loginbusiness.getLongTermAccessToken(loginbusiness.getClientId(), loginbusiness.getClientSecret(),facebookAccessToken):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.getLongTermAccessToken(
+                    loginbusiness.getClientId(),
+                    loginbusiness.getClientSecret(),
+                    facebookAccessToken):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
             facebookLongTermAccessToken = loginbusiness.getLongTermAccessTokenFromFacebook()
             login_session['access_token'] = facebookLongTermAccessToken
             loginbusiness.getFacebookUserInfos(login_session['access_token'])
-            
             login_session['provider'] = loginbusiness.getProvider()
             login_session['user_id_facebook'] = loginbusiness.getUserId()
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
 
-            if not loginbusiness.getUserProfilePhoto(login_session['access_token']):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.getUserProfilePhoto(
+                    login_session['access_token']):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
             login_session['picture'] = loginbusiness.getProfilePhoto()
             login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
-            
+
         if request.args.get('platform') == 'google':
-            if not loginbusiness.readGoogleSecretsData('gplus_client_secret.json'):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.readGoogleSecretsData(
+                    'gplus_client_secret.json'):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
 
-            if not loginbusiness.excangeCodeForCredentialObject(request.data,'gplus_client_secret.json'):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.excangeCodeForCredentialObject(
+                    request.data,
+                    'gplus_client_secret.json'):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-            
-            if not loginbusiness.validateGoogleToken(loginbusiness.getCredentialsData().access_token):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
-                response.headers['Content-Type'] = 'application/json'
-                return response      
 
-            if not loginbusiness.verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess (loginbusiness.getCredentialsData().id_token['sub'], loginbusiness.getContentReturnedFromGoogleTokenValidation()['user_id']):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.validateGoogleToken(
+                    loginbusiness.getCredentialsData().access_token):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
-                return response                 
+                return response
 
-            if not loginbusiness.verifyIfTheResponseDataShouldBeDirectedToAnotherApp(loginbusiness.getContentReturnedFromGoogleTokenValidation()['issued_to'], loginbusiness.getClientId()):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'), 500)
+            if not loginbusiness.verifyIfTheAccessedDataIsFromTheSameUserThatGaranteedAccess(
+                        loginbusiness.getCredentialsData().id_token['sub'],
+                        loginbusiness.getContentReturnedFromGoogleTokenValidation()['user_id']):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-            
-            if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(login_session.get('gplus_id')):
-                response = make_response(json.dumps('The user was already logged...'),200)
+
+            if not loginbusiness.verifyIfTheResponseDataShouldBeDirectedToAnotherApp(
+                    loginbusiness.getContentReturnedFromGoogleTokenValidation()['issued_to'], loginbusiness.getClientId()):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 500)
                 response.headers['Content-Type'] = 'application/json'
                 return response
-            
+
+            if loginBusiness.LoginBusiness().checkIfUserWasAlreadyLogged(
+                    login_session.get('gplus_id')):
+                response = make_response(json.dumps(
+                    'The user was already logged...'), 200)
+                response.headers['Content-Type'] = 'application/json'
+                return response
+
             login_session['access_token'] = loginbusiness.getCredentialsData().access_token
             login_session['gplus_id'] = loginbusiness.getCredentialsData().id_token['sub']
 
-            if not loginbusiness.getUserInformationFromGoogleApi(loginbusiness.getCredentialsData().access_token):
-                response = make_response(json.dumps('Occured an error, please, try log in again!'),200)
+            if not loginbusiness.getUserInformationFromGoogleApi(
+                    loginbusiness.getCredentialsData().access_token):
+                response = make_response(json.dumps(
+                    'Occured an error, please, try log in again!'), 200)
                 response.headers['Content-Type'] = 'application/json'
                 return response
 
@@ -125,7 +126,8 @@ def login():
             login_session['username'] = loginbusiness.getUserName()
             login_session['email'] = loginbusiness.getUserEmail()
             login_session['picture'] = loginbusiness.getProfilePhoto()
-            login_session['local_user_id'] = loginbusiness.getLocalUserId(login_session)
+            login_session['local_user_id'] = loginbusiness.getLocalUserId(
+                login_session)
             flash('Welcome!!!')
         return 'Logged with success!'
     if request.method == "GET":
@@ -133,28 +135,35 @@ def login():
         login_session['user_token'] = state
         return render_template('login.html', STATE=state)
 
+
 @app.route('/logout')
 def logout():
     if login_session.get('access_token') is None:
-        response = make_response(json.dumps('You are not logged to log out!'), 401)
+        response = make_response(json.dumps(
+            'You are not logged to log out!'), 401)
         response.headers['Content-Type'] = 'application/json'
-        return response 
+        return response
+
     logoutBusiness = LogoutBusiness.logoutBusiness()
     if login_session['provider'] == 'google':
         if not logoutBusiness.disconnectFromGoogle(login_session):
-            response = make_response(json.dumps('Occurred an error when trying to logout, please, try to clear you browser cache.'), 401)
+            response = make_response(json.dumps(
+                'Occurred an error when trying to logout, please,' +
+                ' try to clear you browser cache.'), 401)
             response.headers['Content-Type'] = 'application/json'
-            return response     
-    
+            return response
+
     if login_session['provider'] == 'facebook':
         logoutBusiness.disconnectFromFacebook(login_session)
-    flash('You are now not logged in!')
+    flash('You are not logged in!')
     return redirect('/')
+
 
 @app.route('/categories/api')
 def cateogiesApi():
     allCategories = operations.listCategories()
     return jsonify(Categories=[i.serialize for i in allCategories])
+
 
 @app.route('/')
 @app.route('/categories')
@@ -162,8 +171,16 @@ def showCategories():
     allCategories = operations.listCategories()
     lastAddedGamesAndYourCategories = operations.getLastAddedGames()
     if 'username' in login_session:
-        return render_template('categories.html', categories=allCategories, items=lastAddedGamesAndYourCategories)
-    return render_template('publiccategories.html', categories=allCategories, items=lastAddedGamesAndYourCategories)
+        return render_template(
+            'categories.html',
+            categories=allCategories,
+            items=lastAddedGamesAndYourCategories
+            )
+    return render_template(
+        'publiccategories.html',
+        categories=allCategories,
+        items=lastAddedGamesAndYourCategories)
+
 
 @app.route('/category/new', methods=['GET', 'POST'])
 def addCategory():
@@ -175,11 +192,16 @@ def addCategory():
         if categoryDescription == "":
             categoryDescription = '-'
         if categoryTitle != "":
-            operations.createCategory(categoryTitle, categoryDescription, login_session.get('local_user_id'))
-        
+            operations.createCategory(
+                categoryTitle,
+                categoryDescription,
+                login_session.get('local_user_id')
+                )
+
         flash('%s was added to your repository!' % categoryTitle)
         return redirect('/')
     return render_template('addCategory.html')
+
 
 @app.route('/genre/<int:categoryId>/items')
 def showCatalogItems(categoryId):
@@ -187,12 +209,22 @@ def showCatalogItems(categoryId):
         foundedCategory = operations.getCategory(categoryId)
         gameList = operations.getGamesByCategory(categoryId)
         if 'username' not in login_session:
-            return render_template('publiccatalog.html', category = foundedCategory, items = gameList )
-        return render_template('catalog.html', category = foundedCategory, items = gameList )
+            return render_template(
+                'publiccatalog.html',
+                category=foundedCategory,
+                items=gameList
+                )
+        return render_template(
+            'catalog.html',
+            category=foundedCategory,
+            items=gameList
+            )
     except Exception:
-        response = make_response(json.dumps('There is no items related with this category id...'),404)
+        response = make_response(json.dumps(
+            'There is no items related with this category id...'), 404)
         response.headers['Content-Type'] = 'application/json'
         return response
+
 
 @app.route('/genre/<string:genreName>/<int:itemId>')
 def showCatalogItem(genreName, itemId):
@@ -201,49 +233,69 @@ def showCatalogItem(genreName, itemId):
         print(foundedGame.user_id)
         print(login_session.get('local_user_id'))
         if 'username' not in login_session:
-            return render_template('publicShowItem.html', game = foundedGame, isAuthor=False)
+            return render_template(
+                'publicShowItem.html',
+                game=foundedGame,
+                isAuthor=False
+                )
 
         if login_session.get('local_user_id') != foundedGame.user_id:
-            return render_template('publicShowItem.html', game = foundedGame, isLoged=True)
-        return render_template('showItem.html', game = foundedGame)
+            return render_template(
+                'publicShowItem.html',
+                game=foundedGame,
+                isLoged=True
+                )
+        return render_template('showItem.html', game=foundedGame)
     except Exception:
-        response = make_response(json.dumps('There is no game related to this game id...'),404)
+        response = make_response(json.dumps(
+            'There is no game related to this game id...'), 404)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+
+
 @app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
 def addCatalogItem(catalog_id):
     if 'username' not in login_session:
         return redirect('/')
-    try: 
+    try:
         catalog = operations.getCategory(catalog_id)
     except Exception:
-        response = make_response(json.dumps('There is no category related with this category id...'),404)
+        response = make_response(json.dumps(
+            'There is no category related with this category id...'), 404)
         response.headers['Content-Type'] = 'application/json'
         return response
     if request.method == 'POST':
         gameTitle = request.form['title']
         gameShortDescription = request.form['sumary']
-        gameLongDescription = request.form['description']    
+        gameLongDescription = request.form['description']
         if gameShortDescription == "":
             gameShortDescription = "-"
         if gameLongDescription == "":
             gameLongDescription = "-"
         if gameTitle != "":
-            operations.createGame(gameTitle,gameShortDescription,gameLongDescription,catalog_id, login_session.get('local_user_id'))
+            operations.createGame(
+                gameTitle,
+                gameShortDescription,
+                gameLongDescription,
+                catalog_id,
+                login_session.get('local_user_id')
+                )
             flash('New item added!')
-            return redirect(url_for('showCatalogItems', categoryId = catalog_id))
+            return redirect(url_for('showCatalogItems', categoryId=catalog_id))
     return render_template('addCatalogItem.html', category=catalog)
+
 
 @app.route('/catalog/<int:itemId>/edit', methods=['GET', 'POST'])
 def editCatalogItem(itemId):
     game = operations.getGame(itemId)
-    if 'username' not in login_session or login_session.get('local_user_id') != game.user_id:
+    if ('username' not in login_session or
+            login_session.get('local_user_id') != game.user_id):
         return redirect('/')
     try:
         allCategories = operations.listCategories()
     except Exception:
-        response = make_response(json.dumps('There is no item related with this item id...'),404)
+        response = make_response(json.dumps(
+            'There is no item related with this item id...'), 404)
         response.headers['Content-Type'] = 'application/json'
         return response
     if request.method == 'POST':
@@ -256,31 +308,52 @@ def editCatalogItem(itemId):
         if gameLongDescription is None:
             gameLongDescription = '-'
         if gameTitle is not None:
-            newGame = operations.editGame(itemId, gameTitle, gameShortDescription, gameLongDescription, gameCategory, login_session.get('local_user_id'))
+            newGame = operations.editGame(
+                itemId,
+                gameTitle,
+                gameShortDescription,
+                gameLongDescription,
+                gameCategory,
+                login_session.get('local_user_id')
+                )
             print(newGame.category_id)
-            return redirect(url_for('showCatalogItems', categoryId = newGame.category_id))
+            return redirect(url_for(
+                'showCatalogItems',
+                categoryId=newGame.category_id)
+                )
     if request.method == 'GET':
-        return render_template('editCatalogItem.html', item=game, categories=allCategories)
+        return render_template(
+            'editCatalogItem.html',
+            item=game,
+            categories=allCategories
+            )
+
 
 @app.route('/catalog/<int:itemId>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(itemId):
     game = operations.getGame(itemId)
-    if 'username' not in login_session or login_session.get('local_user_id') != game.user_id:
+    if ('username' not in login_session or
+            login_session.get('local_user_id') != game.user_id):
         return redirect('/')
     try:
-       
         gameCategory = game.category_id
     except Exception:
-        response = make_response(json.dumps('This game id does not exists on our reposiotry.'), 404)
+        response = make_response(json.dumps(
+            'This game id does not exists on our reposiotry.'), 404)
         response.headers['Content-Type'] = 'application/json'
         return response
     if request.method == 'POST':
         try:
             operations.deleteGame(itemId)
             # flash
-            return redirect(url_for('showCatalogItems', categoryId=gameCategory))
+            return redirect(url_for(
+                'showCatalogItems',
+                categoryId=gameCategory)
+                )
         except:
-            response = make_response(json.dumps('An error has occured, please contact the administrators or try agin later...'), 500)
+            response = make_response(json.dumps(
+                'An error has occured, please contact the administrators or' +
+                ' try agin later...'), 500)
             response.headers['Content-Type'] = 'application/json'
             return response
     if request.method == 'GET':
