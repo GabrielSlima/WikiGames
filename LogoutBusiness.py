@@ -2,11 +2,12 @@ import httplib2
 
 
 class logoutBusiness:
-    def disconnectFromGoogle(self,login_session):
-        url = ('https://accounts.google.com/o/'
-        'oauth2/revoke?token=%s' %login_session['access_token'])
+    def disconnectFromGoogle(self, login_session):
+        url = (
+            'https://accounts.google.com/o/oauth2/'
+            'revoke?token=%s' % login_session['access_token'])
         http = httplib2.Http()
-        header, content = http.request(url,'GET')
+        header, content = http.request(url, 'GET')
         if header['status'] != '200':
             return False
 
