@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+{% block content%}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>YOU ARE LOGING OUT</b>, are you sure you wanna do this?</h5>
+                        <form action="{{url_for('logout')}}" method="POST">
+                            <button class="btn btn-danger">Yes, I really wanna do this!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+{% endblock%}

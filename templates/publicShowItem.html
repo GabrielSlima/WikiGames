@@ -1,0 +1,26 @@
+{% extends "main.html"%}
+{% if isLoged %}
+{% include "header.html"%}
+{% else %}
+{% include "headerpublic.html"%}
+{% endif%}
+{% block content%}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                            <h5 class="card-title">{{game.title}}</h5>
+                        <div class="card-text">{{game.short_description}}</div>
+                        <div class="card-text">{{game.long_description}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+{% endblock%}

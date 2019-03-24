@@ -1,0 +1,37 @@
+{% extends "main.html"%}
+{% include "header.html"%}
+{% block content%}
+
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">You are editing the game {{item.title}}</h5>
+                        <form action="{{url_for('editCatalogItem', itemId=item.id)}}" method="POST">
+                            <input class="form-control" name="title" type="text" value="{{item.title}}">
+                            <br>
+                            <textarea class="form-control" name="short_description" id="" cols="30" rows="10" value="">{{item.short_description}}</textarea>
+                            <br>
+                            <textarea class="form-control" name="long_description" id="" cols="30" rows="10" value="">{{item.long_description}}</textarea>
+                            <br>
+                            <select class="custom-select" name="category">
+                                {% for category in categories%}
+                                <option value="{{category.id}}">{{category.title}}</option>
+                                {% endfor%}
+                            </select>
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-success">Done</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+{% endblock%}
