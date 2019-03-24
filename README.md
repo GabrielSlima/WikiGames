@@ -35,4 +35,4 @@ You can find more instructions, if you're a beginner, of **how to contriute** in
 ## LICENSE
 
 All files within this repo are released under the MIT (OSI) License - https://en.wikipedia.org/wiki/MIT_License
->>>>>>> develop
+
