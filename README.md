@@ -1,1 +1,1 @@
-##  WikiGames
+## WikiGames
